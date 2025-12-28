@@ -14,8 +14,8 @@ class AttendanceSession(models.Model):
     # --- NEW: Location Constraints ---
     # Default to a specific location (e.g., College Campus coordinates)
     # You can change these defaults to your actual college location
-    latitude = models.FloatField(default=12.9716, help_text="Class Location Latitude") 
-    longitude = models.FloatField(default=77.5946, help_text="Class Location Longitude")
+    latitude = models.FloatField(default=17.4468, help_text="Class Location Latitude") 
+    longitude = models.FloatField(default=78.4468, help_text="Class Location Longitude")
     radius_meters = models.IntegerField(default=200, help_text="Allowed radius in meters")
 
     def save(self, *args, **kwargs):

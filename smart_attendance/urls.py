@@ -24,6 +24,11 @@ urlpatterns = [
 
     # Student Attendance API (Matches your JS fetch call)
     path('api/mark-attendance/', attendance_views.verify_my_face, name='mark_attendance_api'),
+
+
+
+    path('reports/', attendance_views.view_reports, name='view_reports'),
+    path('reports/<int:session_id>/', attendance_views.session_details, name='session_details'),
 ] 
 
 if settings.DEBUG:
