@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Portal | Smart Attendance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f4f6f9;
+        }
+        .portal-card {
+            border-radius: 1rem;
+            animation: fadeUp 0.5s ease;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        video {
+            width: 100%;
+            border-radius: 14px;
+            background: #000;
+        }
+        .camera-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        .face-guide {
+            position: absolute;
+            inset: 15%;
+            border: 2px dashed rgba(255,255,255,0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .status-badge {
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container py-4" style="max-width: 520px;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold mb-0">📚 Student Attendance</h4>
+        <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </div>
+
+    <div class="card portal-card shadow-sm">
+        <div class="card-body p-4">
+
+            <div class="mb-3">
+                <label class="form-label text-muted fw-semibold small">
+                    Select Active Class
+                </label>
+
+                <select id="sessionSelect" class="form-select form-select-lg">
+                    <option value="" disabled selected>-- Choose Class --</option>
+                    {% for session in active_sessions %}
+                        <option value="{{ session.id }}">
+                            {{ session.subject.name }} ({{ session.teacher.first_name }})
+                        </option>
+                    {% empty %}
+                        <option disabled>No Active Classes</option>
+                    {% endfor %}
+                </select>
+
+                {% if not active_sessions %}
+                    <div class="alert alert-warning small mt-2 py-1">
+                        No running classes right now.
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="camera-wrapper my-3">
+                <video id="video" autoplay playsinline></video>
+                <div class="face-guide"></div>
+                <canvas id="canvas" class="d-none"></canvas>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span id="gpsStatus" class="badge bg-secondary status-badge">
+                    📍 Waiting for GPS
+                </span>
+                <span id="cameraStatus" class="badge bg-warning text-dark status-badge">
+                    📷 Camera Active
+                </span>
+            </div>
+
+            <button id="markBtn" class="btn btn-primary btn-lg w-100 fw-bold py-3" disabled>
+                Select Class & Enable GPS
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const markBtn = document.getElementById("markBtn");
+const gpsStatus = document.getElementById("gpsStatus");
+const cameraStatus = document.getElementById("cameraStatus");
+const sessionSelect = document.getElementById("sessionSelect");
+
+let lat = null, lng = null;
+
+// CAMERA
+navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+.then(stream => {
+    video.srcObject = stream;
+    cameraStatus.className = "badge bg-success status-badge";
+    cameraStatus.innerText = "📷 Camera Ready";
+})
+.catch(() => {
+    cameraStatus.className = "badge bg-danger status-badge";
+    cameraStatus.innerText = "Camera Blocked";
+});
+
+// GPS
+if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(
+        pos => {
+            lat = pos.coords.latitude;
+            lng = pos.coords.longitude;
+            gpsStatus.className = "badge bg-success status-badge";
+            gpsStatus.innerText = "📍 GPS Ready";
+            validate();
+        },
+        () => {
+            gpsStatus.className = "badge bg-danger status-badge";
+            gpsStatus.innerText = "GPS Denied";
+        },
+        { enableHighAccuracy: true }
+    );
+}
+
+// Enable button
+function validate() {
+    if (lat && sessionSelect.value) {
+        markBtn.disabled = false;
+        markBtn.innerText = "Mark Attendance";
+    } else {
+        markBtn.disabled = true;
+        markBtn.innerText = !sessionSelect.value
+            ? "Select Class First"
+            : "Waiting for GPS";
+    }
+}
+sessionSelect.addEventListener("change", validate);
+
+// SUBMIT
+markBtn.onclick = () => {
+    const sessionId = sessionSelect.value;
+    if (!sessionId) return;
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext("2d").drawImage(video, 0, 0);
+
+    canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append("session", sessionId);
+        formData.append("captured_image", blob, "attendance.jpg");
+        formData.append("gps_lat", lat);
+        formData.append("gps_long", lng);
+
+        markBtn.disabled = true;
+        markBtn.innerText = "Verifying...";
+
+        // Note: URL matches urls.py
+        fetch("/api/mark-attendance/", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.message === 'Success') {
+                document.body.innerHTML = `
+                    <div class="container mt-5">
+                        <div class="card shadow-lg text-center border-success">
+                            <div class="card-header bg-success text-white">
+                                <h3>✅ Attendance Marked</h3>
+                            </div>
+                            <div class="card-body p-5">
+                                <h1 class="display-1">🎉</h1>
+                                <h4 class="fw-bold">${data.class_name}</h4>
+                                <p class="text-muted">Topic: ${data.topic}</p>
+                                <hr>
+                                <p><strong>Faculty:</strong> ${data.faculty_name}</p>
+                                <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
+                                <a href="/dashboard/" class="btn btn-primary mt-3">Done</a>
+                            </div>
+                        </div>
+                    </div>`;
+            } else {
+                alert("❌ " + (data.error || "Verification failed"));
+                markBtn.disabled = false;
+                markBtn.innerText = "Try Again";
+            }
+        })
+        .catch(() => {
+            alert("Server Error");
+            markBtn.disabled = false;
+        });
+    }, "image/jpeg");
+};
+</script>
+
+</body>
+</html>
