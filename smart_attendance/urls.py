@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 from apps.attendance import views as attendance_views
 from apps.accounts import views as account_views
-
+from profiles import views as profile_views    
 urlpatterns = [
     path('admin/', admin.site.urls),
     

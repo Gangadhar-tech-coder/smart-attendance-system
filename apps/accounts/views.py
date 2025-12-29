@@ -1,14 +1,15 @@
+# apps/accounts/views.py - COMPLETE VERSION
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.core.files.base import ContentFile
 from django.contrib import messages
-import base64
+from django.middleware.csrf import get_token
 
-from .forms import CustomUserCreationForm
+from .models import User, Subject
+from apps.attendance.models import AttendanceSession, AttendanceRecord
 
-# --- CRITICAL CHANGE 1: Import the AttendanceSession model ---
+
 from apps.attendance.models import AttendanceSession 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
@@ -58,42 +59,90 @@ def signup(request):
     
     return render(request, 'signup.html', {'form': form})
 
+
+
 def login_view(request):
+    """Login view for all user types"""
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
             login(request, user)
+            messages.success(request, f'Welcome back, {user.get_full_name() or user.username}!')
             return redirect('dashboard')
         else:
-            messages.error(request, "Invalid username or password.")
-    else:
-        form = AuthenticationForm()
+            messages.error(request, 'Invalid username or password.')
     
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html')
 
+
+@login_required
 def logout_view(request):
+    """Logout view"""
     logout(request)
+    messages.info(request, 'You have been logged out.')
     return redirect('home')
+
 
 @login_required
 def dashboard(request):
+    """
+    Main dashboard - routes to appropriate dashboard based on user type
+    """
     user = request.user
     
+    # Ensure CSRF token
+    get_token(request)
+    
+    # === STUDENT DASHBOARD ===
     if user.user_type == 'student':
-        # --- CRITICAL CHANGE 2: Fetch Active Sessions from DB ---
-        active_sessions = AttendanceSession.objects.filter(is_active=True)
+        # Get active sessions
+        active_sessions = AttendanceSession.objects.filter(
+            is_active=True
+        ).select_related('subject', 'teacher').order_by('-start_time')
         
-        # Pass 'active_sessions' to the template
+        # Get sessions where student already marked attendance
+        marked_session_ids = AttendanceRecord.objects.filter(
+            student=user,
+            session__in=active_sessions
+        ).values_list('session_id', flat=True)
+        
         return render(request, 'student_dashboard.html', {
-            'user': user, 
-            'active_sessions': active_sessions
+            'user': user,
+            'active_sessions': active_sessions,
+            'marked_session_ids': list(marked_session_ids),
         })
-        
+    
+    # === FACULTY DASHBOARD ===
     elif user.user_type == 'staff':
-        return render(request, 'staff_dashboard.html', {'user': user})
+        # Get faculty's subjects
+        subjects = Subject.objects.filter(staff=user)
         
-    elif user.is_superuser:
-        return redirect('/admin/') 
+        # Get active sessions
+        active_sessions = AttendanceSession.objects.filter(
+            teacher=user,
+            is_active=True
+        ).select_related('subject')
         
+        # Get recent sessions (last 5)
+        recent_sessions = AttendanceSession.objects.filter(
+            teacher=user
+        ).select_related('subject').order_by('-start_time')[:10]
+        
+        return render(request, 'staff_dashboard.html', {
+            'user': user,
+            'subjects': subjects,
+            'active_sessions': active_sessions,
+            'active_sessions_count': active_sessions.count(),
+            'recent_sessions': recent_sessions,
+        })
+    
+    # === ADMIN ===
+    elif user.is_superuser or user.user_type == 'admin':
+        return redirect('/admin/')
+    
+    # Fallback
     return redirect('home')

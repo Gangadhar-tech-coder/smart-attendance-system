@@ -1,3 +1,5 @@
+#  profiles/models.py
+
 from django.db import models
 from django.conf import settings  # <--- vital change
 from academics.models import Department, AcademicYear, Semester

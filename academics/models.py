@@ -1,3 +1,6 @@
+#  academics/models.py
+
+
 from django.db import models
 
 class Department(models.Model):
