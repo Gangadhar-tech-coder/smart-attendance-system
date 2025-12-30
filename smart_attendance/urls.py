@@ -29,6 +29,10 @@ urlpatterns = [
 
     path('reports/', attendance_views.view_reports, name='view_reports'),
     path('reports/<int:session_id>/', attendance_views.session_details, name='session_details'),
+
+
+    path('attendance/calculator/', attendance_views.attendance_calculator, name='attendance_calculator'),
+path('attendance/download-excel/', attendance_views.download_attendance_excel, name='download_attendance_excel'),
 ] 
 
 if settings.DEBUG:

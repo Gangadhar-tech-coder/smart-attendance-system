@@ -20,7 +20,7 @@
                         <tr>
                             <th>Date</th>
                             <th>Subject</th>
-                            <th>Topic</th>
+                            {% comment %} <th>Topic</th> {% endcomment %}
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -30,7 +30,7 @@
                         <tr>
                             <td>{{ s.start_time|date:"M d, Y H:i" }}</td>
                             <td class="fw-bold">{{ s.subject.name }}</td>
-                            <td>{{ s.topic }}</td>
+                            {% comment %} <td>{{ s.topic }}</td> {% endcomment %}
                             <td>
                                 {% if s.is_active %}
                                     <span class="badge bg-success">Live Now</span>

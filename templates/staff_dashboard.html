@@ -350,12 +350,20 @@
                 <a href="{% url 'select_class' %}" class="action-btn">Start New Session</a>
             </div>
 
-            <!-- View Reports -->
+            <!-- Attendance Calculator -->
             <div class="action-card">
                 <span class="icon">📊</span>
-                <h2>View Attendance Reports</h2>
-                <p>Access detailed attendance records, statistics, and export data for your classes.</p>
-                <a href="{% url 'view_reports' %}" class="action-btn secondary">View Reports</a>
+                <h2>Attendance Calculator</h2>
+                <p>Calculate student-wise attendance percentage and download detailed reports in Excel format.</p>
+                <a href="{% url 'attendance_calculator' %}" class="action-btn">View Calculator</a>
+            </div>
+
+            <!-- View Reports -->
+            <div class="action-card">
+                <span class="icon">📋</span>
+                <h2>Session History</h2>
+                <p>Access detailed attendance records and statistics for all past sessions.</p>
+                <a href="{% url 'view_reports' %}" class="action-btn secondary">View History</a>
             </div>
         </div>
 

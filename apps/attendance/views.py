@@ -291,4 +291,304 @@ def verify_my_face(request):
         }, status=500)
     
     finally:
-        print(f"\n{'='*60}\n")
+        print(f"\n{'='*60}\n") 
+
+
+# apps/attendance/views.py - Add these new views
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.db.models import Count, Q
+from apps.accounts.models import User, Subject
+from apps.attendance.models import AttendanceSession, AttendanceRecord
+import openpyxl
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+from datetime import datetime
+
+@login_required
+def attendance_calculator(request):
+    """
+    Attendance calculation dashboard for faculty
+    Shows attendance statistics for all students in their subjects
+    """
+    if request.user.user_type != 'staff':
+        return redirect('dashboard')
+    
+    # Get selected subject from query parameter
+    selected_subject_id = request.GET.get('subject')
+    
+    # Get all subjects taught by this faculty
+    subjects = Subject.objects.filter(staff=request.user)
+    
+    # Default to first subject if none selected
+    if not selected_subject_id and subjects.exists():
+        selected_subject = subjects.first()
+    elif selected_subject_id:
+        selected_subject = get_object_or_404(Subject, id=selected_subject_id, staff=request.user)
+    else:
+        # No subjects assigned
+        return render(request, 'attendance_calculator.html', {
+            'subjects': subjects,
+            'selected_subject': None,
+            'attendance_data': [],
+            'stats': {}
+        })
+    
+    # Get all sessions for this subject by this faculty
+    all_sessions = AttendanceSession.objects.filter(
+        teacher=request.user,
+        subject=selected_subject
+    ).order_by('start_time')
+    
+    total_sessions = all_sessions.count()
+    
+    # Get all students who have attended at least once (or get from enrollment if you have it)
+    # For now, we'll get unique students from attendance records
+    # Note: Use 'attendancerecord' (lowercase) - the related_name from AttendanceRecord model
+    students_with_records = User.objects.filter(
+        user_type='student',
+        attendancerecord__session__in=all_sessions
+    ).distinct().order_by('student_id')
+    
+    # Calculate attendance for each student
+    attendance_data = []
+    
+    for student in students_with_records:
+        # Count present days
+        present_count = AttendanceRecord.objects.filter(
+            student=student,
+            session__in=all_sessions,
+            status='present'
+        ).count()
+        
+        # Count total marked (present + absent + pending)
+        total_marked = AttendanceRecord.objects.filter(
+            student=student,
+            session__in=all_sessions
+        ).count()
+        
+        # Calculate percentage based on total sessions
+        if total_sessions > 0:
+            percentage = (present_count / total_sessions) * 100
+        else:
+            percentage = 0
+        
+        attendance_data.append({
+            'student': student,
+            'roll_number': student.student_id or 'N/A',
+            'name': student.get_full_name() or student.username,
+            'total_days': total_sessions,
+            'present_days': present_count,
+            'absent_days': total_sessions - present_count,
+            'percentage': round(percentage, 2)
+        })
+    
+    # Sort by roll number
+    attendance_data.sort(key=lambda x: x['roll_number'])
+    
+    # Calculate overall statistics
+    if attendance_data:
+        total_students = len(attendance_data)
+        avg_attendance = sum(d['percentage'] for d in attendance_data) / total_students
+        students_above_75 = sum(1 for d in attendance_data if d['percentage'] >= 75)
+        students_below_75 = total_students - students_above_75
+    else:
+        total_students = 0
+        avg_attendance = 0
+        students_above_75 = 0
+        students_below_75 = 0
+    
+    stats = {
+        'total_students': total_students,
+        'total_sessions': total_sessions,
+        'avg_attendance': round(avg_attendance, 2),
+        'students_above_75': students_above_75,
+        'students_below_75': students_below_75
+    }
+    
+    return render(request, 'attendance_calculator.html', {
+        'subjects': subjects,
+        'selected_subject': selected_subject,
+        'attendance_data': attendance_data,
+        'stats': stats
+    })
+
+
+@login_required
+def download_attendance_excel(request):
+    """
+    Download attendance data as Excel file
+    """
+    if request.user.user_type != 'staff':
+        return redirect('dashboard')
+    
+    subject_id = request.GET.get('subject')
+    
+    if not subject_id:
+        return HttpResponse("Subject ID required", status=400)
+    
+    selected_subject = get_object_or_404(Subject, id=subject_id, staff=request.user)
+    
+    # Get all sessions for this subject
+    all_sessions = AttendanceSession.objects.filter(
+        teacher=request.user,
+        subject=selected_subject
+    ).order_by('start_time')
+    
+    total_sessions = all_sessions.count()
+    
+    # Get students
+    # Note: Use 'attendancerecord' (lowercase, no underscore)
+    students_with_records = User.objects.filter(
+        user_type='student',
+        attendancerecord__session__in=all_sessions
+    ).distinct().order_by('student_id')
+    
+    # Calculate attendance data
+    attendance_data = []
+    for student in students_with_records:
+        present_count = AttendanceRecord.objects.filter(
+            student=student,
+            session__in=all_sessions,
+            status='present'
+        ).count()
+        
+        if total_sessions > 0:
+            percentage = (present_count / total_sessions) * 100
+        else:
+            percentage = 0
+        
+        attendance_data.append({
+            'roll_number': student.student_id or 'N/A',
+            'name': student.get_full_name() or student.username,
+            'email': student.email,
+            'total_days': total_sessions,
+            'present_days': present_count,
+            'absent_days': total_sessions - present_count,
+            'percentage': round(percentage, 2)
+        })
+    
+    attendance_data.sort(key=lambda x: x['roll_number'])
+    
+    # Create Excel workbook
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Attendance Report"
+    
+    # Define styles
+    header_fill = PatternFill(start_color="1E3C72", end_color="1E3C72", fill_type="solid")
+    header_font = Font(color="FFFFFF", bold=True, size=12)
+    border = Border(
+        left=Side(style='thin'),
+        right=Side(style='thin'),
+        top=Side(style='thin'),
+        bottom=Side(style='thin')
+    )
+    
+    # Title
+    ws.merge_cells('A1:G1')
+    title_cell = ws['A1']
+    title_cell.value = f"Attendance Report - {selected_subject.name}"
+    title_cell.font = Font(bold=True, size=16)
+    title_cell.alignment = Alignment(horizontal='center', vertical='center')
+    
+    # Metadata
+    ws['A2'] = f"Subject Code: {selected_subject.code}"
+    ws['A3'] = f"Faculty: {request.user.get_full_name() or request.user.username}"
+    ws['A4'] = f"Total Sessions: {total_sessions}"
+    ws['A5'] = f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    
+    # Headers
+    headers = ['S.No', 'Roll Number', 'Student Name', 'Email', 'Total Days', 'Present Days', 'Absent Days', 'Percentage (%)']
+    
+    for col_num, header in enumerate(headers, 1):
+        cell = ws.cell(row=7, column=col_num)
+        cell.value = header
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal='center', vertical='center')
+        cell.border = border
+    
+    # Data rows
+    for idx, data in enumerate(attendance_data, 1):
+        row_num = 7 + idx
+        
+        # S.No
+        ws.cell(row=row_num, column=1, value=idx).border = border
+        
+        # Roll Number
+        ws.cell(row=row_num, column=2, value=data['roll_number']).border = border
+        
+        # Name
+        ws.cell(row=row_num, column=3, value=data['name']).border = border
+        
+        # Email
+        ws.cell(row=row_num, column=4, value=data['email']).border = border
+        
+        # Total Days
+        ws.cell(row=row_num, column=5, value=data['total_days']).border = border
+        
+        # Present Days
+        cell_present = ws.cell(row=row_num, column=6, value=data['present_days'])
+        cell_present.border = border
+        
+        # Absent Days
+        cell_absent = ws.cell(row=row_num, column=7, value=data['absent_days'])
+        cell_absent.border = border
+        
+        # Percentage
+        cell_percentage = ws.cell(row=row_num, column=8, value=data['percentage'])
+        cell_percentage.border = border
+        cell_percentage.alignment = Alignment(horizontal='center')
+        
+        # Color code percentage
+        if data['percentage'] >= 75:
+            cell_percentage.fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+            cell_percentage.font = Font(color="006100", bold=True)
+        elif data['percentage'] >= 50:
+            cell_percentage.fill = PatternFill(start_color="FFEB9C", end_color="FFEB9C", fill_type="solid")
+            cell_percentage.font = Font(color="9C6500")
+        else:
+            cell_percentage.fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+            cell_percentage.font = Font(color="9C0006", bold=True)
+    
+    # Adjust column widths
+    ws.column_dimensions['A'].width = 8
+    ws.column_dimensions['B'].width = 15
+    ws.column_dimensions['C'].width = 25
+    ws.column_dimensions['D'].width = 30
+    ws.column_dimensions['E'].width = 12
+    ws.column_dimensions['F'].width = 14
+    ws.column_dimensions['G'].width = 14
+    ws.column_dimensions['H'].width = 15
+    
+    # Summary statistics
+    summary_row = 7 + len(attendance_data) + 2
+    ws.cell(row=summary_row, column=1, value="Summary Statistics").font = Font(bold=True, size=12)
+    
+    ws.cell(row=summary_row + 1, column=1, value="Total Students:")
+    ws.cell(row=summary_row + 1, column=2, value=len(attendance_data))
+    
+    ws.cell(row=summary_row + 2, column=1, value="Students Above 75%:")
+    above_75 = sum(1 for d in attendance_data if d['percentage'] >= 75)
+    ws.cell(row=summary_row + 2, column=2, value=above_75)
+    
+    ws.cell(row=summary_row + 3, column=1, value="Students Below 75%:")
+    ws.cell(row=summary_row + 3, column=2, value=len(attendance_data) - above_75)
+    
+    if attendance_data:
+        avg_percentage = sum(d['percentage'] for d in attendance_data) / len(attendance_data)
+        ws.cell(row=summary_row + 4, column=1, value="Average Attendance:")
+        ws.cell(row=summary_row + 4, column=2, value=f"{avg_percentage:.2f}%")
+    
+    # Prepare response
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    
+    filename = f"Attendance_{selected_subject.code}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    
+    wb.save(response)
+    return response
