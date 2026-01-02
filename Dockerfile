@@ -1,12 +1,13 @@
-# 1. Use a lightweight Python base image
 FROM python:3.10-slim
 
-# 2. Set environment variables to keep Python clean
+# 1. Standard environment settings
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# 3. Install system dependencies needed for dlib and opencv
-# This is the magic step that prevents the memory crash
+# 2. CRITICAL: Force cmake to use only 1 core to prevent running out of RAM
+ENV CMAKE_BUILD_PARALLEL_LEVEL=1
+
+# 3. Install system dependencies (needed for dlib/opencv)
 RUN apt-get update && apt-get install -y \
     cmake \
     build-essential \
@@ -16,23 +17,17 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 4. Set the working directory
 WORKDIR /app
 
-# 5. Copy requirements and install them
+# 4. Install python dependencies
 COPY requirements.txt /app/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 6. Copy the rest of the project code
 COPY . /app/
-
-# 7. Make the build script executable (optional but good practice)
 COPY build.sh /app/
 RUN chmod +x /app/build.sh
 
-# 8. Expose the port Render expects
 EXPOSE 8000
 
-# 9. The command to start the server (Run migrations then start Gunicorn)
 CMD ["sh", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && gunicorn smart_attendance.wsgi:application --bind 0.0.0.0:8000"]
