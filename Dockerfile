@@ -30,4 +30,4 @@ RUN chmod +x /app/build.sh
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && gunicorn smart_attendance.wsgi:application --bind 0.0.0.0:8000"]
+CMD ["./build.sh"]
