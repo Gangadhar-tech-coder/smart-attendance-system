@@ -19,7 +19,7 @@
         }
 
         .dashboard-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -61,41 +61,267 @@
         .logout-btn:hover {
             background: #c82333;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
         }
 
-        /* Stats Cards */
-        .stats-grid {
+        /* Success Message */
+        .success-message {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        /* Two Column Layout */
+        .main-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
         }
 
-        .stat-card {
+        /* Calendar Section */
+        .calendar-section {
             background: white;
             border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
-        .stat-card h3 {
-            color: #666;
+        .calendar-header h2 {
+            color: #333;
+            font-size: 20px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .calendar-nav button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
             font-size: 14px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .stat-card .number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #667eea;
+        .calendar-nav button:hover {
+            background: #5568d3;
+        }
+
+        .month-year {
+            font-weight: 600;
+            color: #333;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .calendar {
+            width: 100%;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .day-name {
+            text-align: center;
+            font-weight: 600;
+            color: #666;
+            font-size: 12px;
+            padding: 10px 0;
+        }
+
+        .calendar-dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .date-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .date-cell:hover {
+            transform: scale(1.05);
+        }
+
+        .date-cell.empty {
+            background: transparent;
+            cursor: default;
+        }
+
+        .date-cell.today {
+            border: 2px solid #667eea;
+            font-weight: 700;
+        }
+
+        .date-cell.present {
+            background: #28a745;
+            color: white;
+        }
+
+        .date-cell.absent {
+            background: #dc3545;
+            color: white;
+        }
+
+        .date-cell.future {
+            background: #e9ecef;
+            color: #adb5bd;
+        }
+
+        .calendar-legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        /* History Section */
+        .history-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .history-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .history-header h2 {
+            color: #333;
+            font-size: 20px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.2s;
+        }
+
+        .history-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .history-item.present {
+            border-left-color: #28a745;
+        }
+
+        .history-item.absent {
+            border-left-color: #dc3545;
+        }
+
+        .history-item.pending {
+            border-left-color: #ffc107;
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .history-subject {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .history-details {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .history-status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .history-status.present {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .history-status.absent {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .history-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
         }
 
         /* Active Sessions Section */
@@ -128,15 +354,8 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.3s;
         }
 
-        .refresh-btn:hover {
-            background: #5568d3;
-            transform: scale(1.05);
-        }
-
-        /* Session Cards */
         .sessions-grid {
             display: grid;
             gap: 20px;
@@ -146,9 +365,7 @@
             border: 2px solid #f0f0f0;
             border-radius: 12px;
             padding: 25px;
-            transition: all 0.3s;
             position: relative;
-            overflow: hidden;
         }
 
         .session-card::before {
@@ -161,27 +378,15 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        .session-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
-        }
-
         .session-header {
             display: flex;
             justify-content: space-between;
-            align-items: start;
             margin-bottom: 15px;
         }
 
         .session-info h3 {
             color: #333;
             font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .session-info p {
-            color: #666;
-            font-size: 14px;
         }
 
         .session-badge {
@@ -190,7 +395,6 @@
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
             animation: pulse 2s infinite;
         }
 
@@ -209,22 +413,6 @@
             border-radius: 8px;
         }
 
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .detail-item strong {
-            color: #666;
-            font-size: 13px;
-        }
-
-        .detail-item span {
-            color: #333;
-            font-size: 14px;
-        }
-
         .mark-attendance-btn {
             width: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -235,45 +423,9 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            transition: all 0.3s;
-            margin-top: 15px;
         }
 
-        .mark-attendance-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .mark-attendance-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .empty-state img {
-            width: 150px;
-            opacity: 0.3;
-            margin-bottom: 20px;
-        }
-
-        .empty-state h3 {
-            color: #666;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .empty-state p {
-            color: #999;
-            font-size: 14px;
-        }
-
-        /* Camera Modal */
+        /* Camera Modal - Same as before */
         .modal {
             display: none;
             position: fixed;
@@ -287,9 +439,7 @@
             align-items: center;
         }
 
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
         .modal-content {
             background: white;
@@ -297,34 +447,6 @@
             padding: 30px;
             max-width: 600px;
             width: 90%;
-            position: relative;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .modal-header h2 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .modal-header p {
-            color: #666;
-            font-size: 14px;
         }
 
         .camera-container {
@@ -332,18 +454,15 @@
             background: #000;
             border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
 
         #video, #canvas {
             width: 100%;
-            height: auto;
             display: block;
         }
 
-        #canvas {
-            display: none;
-        }
+        #canvas { display: none; }
 
         .camera-status {
             position: absolute;
@@ -354,67 +473,19 @@
             padding: 8px 15px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
         }
 
         .camera-status.ready {
             background: rgba(40, 167, 69, 0.9);
         }
 
-        .modal-actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .capture-btn, .cancel-btn, .submit-btn, .retake-btn {
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .capture-btn {
-            background: #667eea;
-            color: white;
-            grid-column: 1 / -1;
-        }
-
-        .capture-btn:hover {
-            background: #5568d3;
-        }
-
-        .submit-btn {
-            background: #28a745;
-            color: white;
-        }
-
-        .submit-btn:hover {
-            background: #218838;
-        }
-
-        .retake-btn, .cancel-btn {
-            background: #6c757d;
-            color: white;
-        }
-
-        .retake-btn:hover, .cancel-btn:hover {
-            background: #5a6268;
-        }
-
-        /* Loading Spinner */
         .loading {
             display: none;
             text-align: center;
             padding: 20px;
         }
 
-        .loading.active {
-            display: block;
-        }
+        .loading.active { display: block; }
 
         .spinner {
             border: 4px solid #f3f3f3;
@@ -431,38 +502,37 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Success Message */
-        .success-message {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            color: #155724;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: none;
-            animation: slideDown 0.3s ease;
+        .modal-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
 
-        .success-message.active {
-            display: block;
+        .capture-btn, .submit-btn, .retake-btn, .cancel-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        @keyframes slideDown {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .capture-btn {
+            background: #667eea;
+            color: white;
+            grid-column: 1 / -1;
         }
 
-        .success-message h3 {
-            margin-bottom: 10px;
+        .submit-btn {
+            background: #28a745;
+            color: white;
         }
 
-        /* Error Message */
+        .cancel-btn, .retake-btn {
+            background: #6c757d;
+            color: white;
+        }
+
         .error-message {
             background: #f8d7da;
             border: 2px solid #dc3545;
@@ -473,11 +543,20 @@
             display: none;
         }
 
-        .error-message.active {
-            display: block;
+        .error-message.active { display: block; }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -485,17 +564,12 @@
                 gap: 15px;
             }
 
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .calendar-nav {
+                flex-direction: column;
             }
 
             .session-details {
                 grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 20px;
             }
         }
     </style>
@@ -508,9 +582,7 @@
                 <h1>Welcome, {{ user.get_full_name|default:user.username }}! 👋</h1>
                 <p>Student ID: {{ user.student_id|default:"N/A" }} | Department: {{ user.department|default:"N/A" }}</p>
             </div>
-            <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">
-                Logout
-            </button>
+            <button class="logout-btn" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
         </div>
 
         <!-- Success Message -->
@@ -519,29 +591,79 @@
             <p id="successDetails"></p>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Active Classes</h3>
-                <div class="number" id="activeClassesCount">{{ active_sessions|length }}</div>
+        <!-- Calendar and History Grid -->
+        <div class="main-grid">
+            <!-- Monthly Calendar -->
+            <div class="calendar-section">
+                <div class="calendar-header">
+                    <h2>📅 Attendance Calendar</h2>
+                </div>
+                
+                <div class="calendar-nav">
+                    <button onclick="previousMonth()">◀ Prev</button>
+                    <span class="month-year" id="monthYear"></span>
+                    <button onclick="nextMonth()">Next ▶</button>
+                </div>
+
+                <div class="calendar">
+                    <div class="calendar-days">
+                        <div class="day-name">Sun</div>
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
+                    </div>
+                    <div class="calendar-dates" id="calendarDates"></div>
+                </div>
+
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: #28a745;"></div>
+                        <span>Present</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: #dc3545;"></div>
+                        <span>Absent</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: #f8f9fa; border: 1px solid #ddd;"></div>
+                        <span>No Class</span>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>Today's Attendance</h3>
-                <div class="number">--</div>
-            </div>
-            <div class="stat-card">
-                <h3>Overall Percentage</h3>
-                <div class="number">--%</div>
+
+            <!-- Attendance History -->
+            <div class="history-section">
+                <div class="history-header">
+                    <h2>📜 Recent Attendance History</h2>
+                </div>
+
+                <div class="history-list" id="historyList">
+                    {% if attendance_history %}
+                        {% for record in attendance_history %}
+                        <div class="history-item {{ record.status }}">
+                            <div class="history-date">{{ record.timestamp|date:"l, F d, Y" }} at {{ record.timestamp|date:"h:i A" }}</div>
+                            <div class="history-subject">{{ record.session.subject.name }}</div>
+                            <div class="history-details">Faculty: {{ record.session.teacher.get_full_name|default:record.session.teacher.username }}</div>
+                            <span class="history-status {{ record.status }}">{{ record.get_status_display|upper }}</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-history">
+                            <p>No attendance history yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
-        <!-- Active Sessions Section -->
+        <!-- Active Sessions -->
         <div class="sessions-section">
             <div class="section-header">
                 <h2>🎓 Active Classes</h2>
-                <button class="refresh-btn" onclick="location.reload()">
-                    🔄 Refresh
-                </button>
+                <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
             </div>
 
             <div class="sessions-grid">
@@ -555,28 +677,14 @@
                             </div>
                             <span class="session-badge">● LIVE</span>
                         </div>
-
                         <div class="session-details">
-                            <div class="detail-item">
-                                <strong>👨‍🏫 Faculty:</strong>
-                                <span>{{ session.teacher.get_full_name|default:session.teacher.username }}</span>
-                            </div>
-                            <div class="detail-item">
-                                <strong>🕐 Started:</strong>
-                                <span>{{ session.start_time|date:"h:i A" }}</span>
-                            </div>
-                            <div class="detail-item">
-                                <strong>📍 Location:</strong>
-                                <span>Within {{ session.radius_meters }}m</span>
-                            </div>
-                            <div class="detail-item">
-                                <strong>📅 Date:</strong>
-                                <span>{{ session.start_time|date:"M d, Y" }}</span>
-                            </div>
+                            <div><strong>👨‍🏫 Faculty:</strong> {{ session.teacher.get_full_name }}</div>
+                            <div><strong>🕐 Started:</strong> {{ session.start_time|date:"h:i A" }}</div>
+                            <div><strong>📍 Location:</strong> {{ session.radius_meters }}m</div>
+                            <div><strong>📅 Date:</strong> {{ session.start_time|date:"M d" }}</div>
                         </div>
-
                         <button class="mark-attendance-btn" 
-                                onclick="openCamera({{ session.id }}, '{{ session.subject.name }}', '{{ session.teacher.get_full_name|default:session.teacher.username }}')">
+                                onclick="openCamera({{ session.id }}, '{{ session.subject.name }}', '{{ session.teacher.get_full_name }}')">
                             📸 Mark Attendance
                         </button>
                     </div>
@@ -584,297 +692,223 @@
                 {% else %}
                     <div class="empty-state">
                         <h3>📚 No Active Classes</h3>
-                        <p>There are no active classes at the moment. Check back later!</p>
+                        <p>Check back when a class session starts!</p>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Camera Modal -->
+    <!-- Camera Modal (same as before) -->
     <div class="modal" id="cameraModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Mark Attendance</h2>
-                <p id="modalSubtitle">Position your face in the frame</p>
-            </div>
-
+            <h2 id="modalTitle">Mark Attendance</h2>
+            <p id="modalSubtitle"></p>
             <div class="camera-container">
                 <video id="video" autoplay></video>
                 <canvas id="canvas"></canvas>
-                <div class="camera-status" id="cameraStatus">Initializing camera...</div>
+                <div class="camera-status" id="cameraStatus">Initializing...</div>
             </div>
-
             <div class="loading" id="loadingSpinner">
                 <div class="spinner"></div>
-                <p>Verifying your face... Please wait</p>
+                <p>Verifying face...</p>
             </div>
-
             <div class="error-message" id="errorMessage"></div>
-
             <div class="modal-actions" id="modalActions">
-                <button class="capture-btn" id="captureBtn" onclick="capturePhoto()">
-                    📸 Capture Photo
-                </button>
-                <button class="cancel-btn" onclick="closeCamera()">
-                    Cancel
-                </button>
+                <button class="capture-btn" onclick="capturePhoto()">📸 Capture</button>
+                <button class="cancel-btn" onclick="closeCamera()">Cancel</button>
             </div>
-
-            <div class="modal-actions" id="reviewActions" style="display: none;">
-                <button class="submit-btn" onclick="submitAttendance()">
-                    ✓ Submit Attendance
-                </button>
-                <button class="retake-btn" onclick="retakePhoto()">
-                    🔄 Retake
-                </button>
+            <div class="modal-actions" id="reviewActions" style="display:none;">
+                <button class="submit-btn" onclick="submitAttendance()">✓ Submit</button>
+                <button class="retake-btn" onclick="retakePhoto()">🔄 Retake</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Attendance data from Django (inject via template)
+        const attendanceData = {{ attendance_calendar|safe }};
+        
+        let currentDate = new Date();
         let video = document.getElementById('video');
         let canvas = document.getElementById('canvas');
-        let captureBtn = document.getElementById('captureBtn');
-        let cameraStatus = document.getElementById('cameraStatus');
-        let currentSessionId = null;
-        let currentSubjectName = '';
-        let currentFacultyName = '';
         let stream = null;
         let capturedImage = null;
+        let currentSessionId = null;
 
-        // Open camera modal
+        // Calendar Functions
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            document.getElementById('monthYear').textContent = 
+                new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            
+            const calendarDates = document.getElementById('calendarDates');
+            calendarDates.innerHTML = '';
+            
+            // Empty cells
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'date-cell empty';
+                calendarDates.appendChild(emptyCell);
+            }
+            
+            // Date cells
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateCell = document.createElement('div');
+                dateCell.className = 'date-cell';
+                dateCell.textContent = day;
+                
+                const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const cellDate = new Date(year, month, day);
+                
+                // Mark today
+                if (cellDate.toDateString() === today.toDateString()) {
+                    dateCell.classList.add('today');
+                }
+                
+                // Mark future dates
+                if (cellDate > today) {
+                    dateCell.classList.add('future');
+                } else {
+                    // Check attendance data
+                    if (attendanceData[dateKey]) {
+                        if (attendanceData[dateKey] === 'present') {
+                            dateCell.classList.add('present');
+                            dateCell.title = 'Present on this day';
+                        } else {
+                            dateCell.classList.add('absent');
+                            dateCell.title = 'Absent on this day';
+                        }
+                    }
+                }
+                
+                calendarDates.appendChild(dateCell);
+            }
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        // Camera Functions (same as before)
         async function openCamera(sessionId, subjectName, facultyName) {
             currentSessionId = sessionId;
-            currentSubjectName = subjectName;
-            currentFacultyName = facultyName;
-
             document.getElementById('modalTitle').textContent = `Mark Attendance - ${subjectName}`;
             document.getElementById('modalSubtitle').textContent = `Faculty: ${facultyName}`;
             document.getElementById('cameraModal').classList.add('active');
-            document.getElementById('errorMessage').classList.remove('active');
-
-            // Request camera access
+            
             try {
-                cameraStatus.textContent = 'Requesting camera access...';
-                cameraStatus.classList.remove('ready');
-
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        facingMode: 'user',
-                        width: { ideal: 640 },
-                        height: { ideal: 480 }
-                    } 
-                });
-
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
                 video.srcObject = stream;
-                video.style.display = 'block';
-                canvas.style.display = 'none';
-
-                cameraStatus.textContent = '✓ Camera Ready';
-                cameraStatus.classList.add('ready');
-                captureBtn.disabled = false;
-
+                document.getElementById('cameraStatus').textContent = '✓ Ready';
+                document.getElementById('cameraStatus').classList.add('ready');
             } catch (err) {
-                console.error('Camera Error:', err);
-                showError('Camera access denied. Please allow camera permission and try again.');
-                cameraStatus.textContent = '✗ Camera Error';
+                showError('Camera access denied');
             }
         }
 
-        // Close camera modal
         function closeCamera() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-            }
+            if (stream) stream.getTracks().forEach(t => t.stop());
             document.getElementById('cameraModal').classList.remove('active');
-            document.getElementById('modalActions').style.display = 'grid';
-            document.getElementById('reviewActions').style.display = 'none';
-            video.style.display = 'block';
-            canvas.style.display = 'none';
-            capturedImage = null;
         }
 
-        // Capture photo
         function capturePhoto() {
-            const context = canvas.getContext('2d');
+            const ctx = canvas.getContext('2d');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-
-            // Draw video frame to canvas
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Convert to blob
-            canvas.toBlob((blob) => {
+            ctx.drawImage(video, 0, 0);
+            canvas.toBlob(blob => {
                 capturedImage = blob;
-
-                // Show captured image
                 video.style.display = 'none';
                 canvas.style.display = 'block';
-
-                // Stop video stream
-                if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                }
-
-                // Show review buttons
+                if (stream) stream.getTracks().forEach(t => t.stop());
                 document.getElementById('modalActions').style.display = 'none';
                 document.getElementById('reviewActions').style.display = 'grid';
-
-                cameraStatus.textContent = '📸 Photo Captured';
             }, 'image/jpeg', 0.9);
         }
 
-        // Retake photo
         async function retakePhoto() {
             document.getElementById('modalActions').style.display = 'grid';
             document.getElementById('reviewActions').style.display = 'none';
             video.style.display = 'block';
             canvas.style.display = 'none';
-
-            // Restart camera
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'user' } 
-                });
-                video.srcObject = stream;
-                cameraStatus.textContent = '✓ Camera Ready';
-                cameraStatus.classList.add('ready');
-            } catch (err) {
-                showError('Failed to restart camera');
-            }
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+            video.srcObject = stream;
         }
 
-        // Submit attendance
         async function submitAttendance() {
-            if (!capturedImage || !currentSessionId) {
-                showError('No image captured or session not selected');
-                return;
-            }
-
-            // Show loading
             document.getElementById('loadingSpinner').classList.add('active');
             document.getElementById('reviewActions').style.display = 'none';
 
-            // Get GPS coordinates
-            let gpsLat = 0;
-            let gpsLong = 0;
-
-            try {
-                const position = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        timeout: 5000,
-                        enableHighAccuracy: true
-                    });
-                });
-                gpsLat = position.coords.latitude;
-                gpsLong = position.coords.longitude;
-                console.log(`GPS: ${gpsLat}, ${gpsLong}`);
-            } catch (err) {
-                console.warn('GPS not available:', err);
-                // Continue without GPS
-            }
-
-            // Prepare form data
             const formData = new FormData();
             formData.append('session', currentSessionId);
-            formData.append('gps_lat', gpsLat);
-            formData.append('gps_long', gpsLong);
+            formData.append('gps_lat', 0);
+            formData.append('gps_long', 0);
             formData.append('captured_image', capturedImage, 'attendance.jpg');
-
-            // Get CSRF token
-            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
-                              getCookie('csrftoken');
 
             try {
                 const response = await fetch('/api/mark-attendance/', {
                     method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrftoken
-                    },
+                    headers: { 'X-CSRFToken': getCookie('csrftoken') },
                     body: formData
                 });
-
                 const data = await response.json();
-
                 document.getElementById('loadingSpinner').classList.remove('active');
-
-                if (response.ok && data.success !== false) {
-                    // Success
+                
+                if (response.ok) {
                     closeCamera();
                     showSuccess(data);
-                    
-                    // Reload page after 3 seconds to update stats
-                    setTimeout(() => location.reload(), 3000);
+                    setTimeout(() => location.reload(), 2000);
                 } else {
-                    // Error from server
                     document.getElementById('reviewActions').style.display = 'grid';
-                    showError(data.error || data.message || 'Attendance marking failed');
+                    showError(data.error || 'Failed');
                 }
-
             } catch (err) {
-                console.error('Submit Error:', err);
                 document.getElementById('loadingSpinner').classList.remove('active');
-                document.getElementById('reviewActions').style.display = 'grid';
-                showError('Network error. Please check your connection and try again.');
+                showError('Network error');
             }
         }
 
-        // Show success message
         function showSuccess(data) {
-            const successMsg = document.getElementById('successMessage');
-            const details = document.getElementById('successDetails');
-            
-            let detailsText = `Subject: ${data.details?.class_name || currentSubjectName}`;
-            if (data.details?.confidence) {
-                detailsText += ` | Confidence: ${data.details.confidence.toFixed(1)}%`;
-            }
-            if (data.details?.timestamp) {
-                detailsText += ` | Time: ${data.details.timestamp}`;
-            }
-
-            details.textContent = detailsText;
-            successMsg.classList.add('active');
-
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                successMsg.classList.remove('active');
-            }, 5000);
+            const msg = document.getElementById('successMessage');
+            document.getElementById('successDetails').textContent = 
+                `${data.details?.class_name} | Confidence: ${data.details?.confidence?.toFixed(1)}%`;
+            msg.classList.add('active');
         }
 
-        // Show error message
         function showError(message) {
-            const errorMsg = document.getElementById('errorMessage');
-            errorMsg.textContent = message;
-            errorMsg.classList.add('active');
-
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                errorMsg.classList.remove('active');
-            }, 5000);
+            const msg = document.getElementById('errorMessage');
+            msg.textContent = message;
+            msg.classList.add('active');
         }
 
-        // Get CSRF token from cookies
         function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
+            let value = null;
+            if (document.cookie) {
+                document.cookie.split(';').forEach(c => {
+                    const cookie = c.trim();
+                    if (cookie.startsWith(name + '=')) {
+                        value = decodeURIComponent(cookie.substring(name.length + 1));
                     }
-                }
+                });
             }
-            return cookieValue;
+            return value;
         }
 
-        // Auto-refresh every 60 seconds to check for new sessions
-        setInterval(() => {
-            // Silently check for updates without full reload
-            console.log('Checking for new sessions...');
-        }, 60000);
+        // Initialize calendar on load
+        renderCalendar();
     </script>
 </body>
 </html>

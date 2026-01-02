@@ -231,7 +231,7 @@ def verify_my_face(request):
 
         # ===== FACE VERIFICATION =====
         print(f"\n🤖 Face Verification...")
-        
+          
         result = check_face_match(
             ref_path, 
             record.captured_image.path, 

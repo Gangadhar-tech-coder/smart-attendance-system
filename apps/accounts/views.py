@@ -5,18 +5,13 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.middleware.csrf import get_token
+from django.utils import timezone
 
 from .models import User, Subject
 from apps.attendance.models import AttendanceSession, AttendanceRecord
-
-
-from apps.attendance.models import AttendanceSession 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
 from django.core.files.base import ContentFile
 import base64
 from .forms import CustomUserCreationForm
-
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES) # Note: Added request.FILES
@@ -59,8 +54,6 @@ def signup(request):
     
     return render(request, 'signup.html', {'form': form})
 
-
-
 def login_view(request):
     """Login view for all user types"""
     if request.method == 'POST':
@@ -99,6 +92,9 @@ def dashboard(request):
     
     # === STUDENT DASHBOARD ===
     if user.user_type == 'student':
+        from datetime import datetime, timedelta
+        import json
+        
         # Get active sessions
         active_sessions = AttendanceSession.objects.filter(
             is_active=True
@@ -110,10 +106,33 @@ def dashboard(request):
             session__in=active_sessions
         ).values_list('session_id', flat=True)
         
+        # Get attendance history (last 30 days)
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        attendance_history = AttendanceRecord.objects.filter(
+            student=user,
+            timestamp__gte=thirty_days_ago
+        ).select_related('session__subject', 'session__teacher').order_by('-timestamp')[:20]
+        
+        # Prepare calendar data
+        # Get all attendance records for calendar display
+        all_attendance = AttendanceRecord.objects.filter(
+            student=user
+        ).values('timestamp__date', 'status')
+        
+        # Build calendar data dictionary
+        attendance_calendar = {}
+        for record in all_attendance:
+            date_str = record['timestamp__date'].strftime('%Y-%m-%d')
+            # If present on any session that day, mark as present
+            if date_str not in attendance_calendar or record['status'] == 'present':
+                attendance_calendar[date_str] = record['status']
+        
         return render(request, 'student_dashboard.html', {
             'user': user,
             'active_sessions': active_sessions,
             'marked_session_ids': list(marked_session_ids),
+            'attendance_history': attendance_history,
+            'attendance_calendar': json.dumps(attendance_calendar),  # JSON for JavaScript
         })
     
     # === FACULTY DASHBOARD ===

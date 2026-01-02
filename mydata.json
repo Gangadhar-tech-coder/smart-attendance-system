@@ -1,0 +1,1457 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-12-27T13:08:26.782Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "2",
+    "object_repr": "Gangu (student)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-12-27T13:09:16.948Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "2",
+    "object_repr": "Gangu (student)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email address\", \"Phone number\", \"Student id\", \"Department\", \"Profile image\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-12-27T13:22:11.046Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "Python (CSM1)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-12-27T13:23:16.571Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "5",
+    "object_repr": "Anitha (student)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-12-27T13:24:05.563Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "5",
+    "object_repr": "Anitha (staff)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Email address\", \"Phone number\", \"Staff status\", \"User type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-12-27T13:24:37.601Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Machine Learning (CSM2)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-12-27T18:12:05.055Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "2",
+    "object_repr": "Machine Learning - 2025-12-27 23:34",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Latitude\", \"Longitude\", \"Radius meters\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-12-27T18:29:26.026Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "3",
+    "object_repr": "Machine Learning - 2025-12-27 23:57",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Latitude\", \"Longitude\", \"Radius meters\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-12-28T12:35:00.376Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "9",
+    "object_repr": "Laxman (student)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Profile image\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-12-28T13:40:57.314Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "5",
+    "object_repr": "Machine Learning - 2025-12-28 19:01",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Latitude\", \"Longitude\", \"Radius meters\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2025-12-28T18:02:43.821Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "2",
+    "object_repr": "Machine Learning - 2025-12-27 23:34",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"End time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2025-12-28T18:02:51.024Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "3",
+    "object_repr": "Machine Learning - 2025-12-27 23:57",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"End time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2025-12-28T18:02:58.635Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "4",
+    "object_repr": "Machine Learning - 2025-12-28 17:55",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"End time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2025-12-28T18:03:04.934Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "5",
+    "object_repr": "Machine Learning - 2025-12-28 19:01",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"End time\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2025-12-28T18:08:33.856Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "6",
+    "object_repr": "Python - 2025-12-28 23:35",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Latitude\", \"Longitude\", \"Radius meters\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2025-12-28T19:01:36.128Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "7",
+    "object_repr": "Python - 2025-12-29 00:30",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Latitude\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2025-12-28T19:01:48.632Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "7",
+    "object_repr": "Python - 2025-12-29 00:30",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Longitude\", \"Radius meters\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2025-12-29T04:32:59.296Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "CSE",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2025-12-29T04:34:19.008Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "2025-2026",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2025-12-29T04:34:28.129Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "2025-2026",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is active\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2025-12-29T04:35:01.941Z",
+    "user": 1,
+    "content_type": 11,
+    "object_id": "1",
+    "object_repr": "Semester 6 (2025-2026)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2025-12-29T04:36:49.563Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Maths (C0501)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2025-12-29T04:37:05.435Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Maths (C0511)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2025-12-29T04:37:38.481Z",
+    "user": 1,
+    "content_type": 14,
+    "object_id": "1",
+    "object_repr": "23J41A66H4 - Laxman (student)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2025-12-29T04:38:10.345Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "1",
+    "object_repr": "Anitha (staff) - 2367yugh",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2025-12-29T05:33:32.092Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "1",
+    "object_repr": "Machine Learning - 2025-12-27 22:24",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2025-12-29T05:33:55.318Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "5",
+    "object_repr": "Machine Learning - 2025-12-28 13:31",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2025-12-29T05:33:55.318Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "4",
+    "object_repr": "Machine Learning - 2025-12-28 12:25",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2025-12-29T05:33:55.318Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "3",
+    "object_repr": "Machine Learning - 2025-12-27 18:27",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2025-12-29T05:33:55.318Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "2",
+    "object_repr": "Machine Learning - 2025-12-27 18:04",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2025-12-29T05:33:55.318Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "1",
+    "object_repr": "Machine Learning - 2025-12-27 16:54",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "26nb587sfah38tafulws3j8el8b1rcs1",
+  "fields": {
+    "session_data": ".eJxVjM0OwiAQhN-FsyH8dQGP3n0GsiwoVQNJaU_Gd5cmPehhksl8M_NmAbe1hK3nJcyJnZlnp98sIj1z3UF6YL03Tq2uyxz5XuEH7fzaUn5dju7fQcFexlrEhJGcgqFJkzMo4OaJKFvlwJN1URmR5LAYDXgFWnsLCBkn7aRkny_wWTeD:1vZqsH:_et5hf6Rpi8INYaMlF-s84j_d24buae3ul7w5X0Ddwo",
+    "expire_date": "2026-01-11T13:31:57.950Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3kxqopz667g7xfxg3t4g7jb74npnxcxr",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQKA-X7v0GMsyAVA0kpV0Z_11JutDdzT0n58UC7FsJe09rWIidmWan3y8CPlIdgO5Qb41jq9u6RD4UftDOr43S83K4f4ECvYxsNpC18oIUOUpWZ-kMWgmzSSZab0hM1jorZCInjZ40ylkjevguoTJ7fwDZVDdS:1vaTgp:sCUmU5KLUblC1AORe3IdQYioCLSFbGU_1VnOlA1aDEw",
+    "expire_date": "2026-01-13T06:58:43.122Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4chseze759cgz6ksp87ofsmfbhnb5qwq",
+  "fields": {
+    "session_data": ".eJxVjDsOgzAQBe_iOrJ42GCcMj1nQOv1OiaJsMSninL3gESRtG9m3lsNtK152BaZhzGqqwLU5XcMxE-ZDhIfNN2L5jKt8xj0oeiTLrovUV630_07yLTkvWa2NQQBBN8w-7arHKdIkiycbx0qeNSyQ0TTdM7YxEFQhZZCk2DU5wsAezfD:1va65s:Esg3PlpV7kSN9Lr14ZHWP0Sx2rxZ8NhuxPskfYIc514",
+    "expire_date": "2026-01-12T05:47:00.408Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "59iym7hx1kagxpfm84b4e2biyn6d8htc",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQKA-X7v0GMsyAVA0kpV0Z_11JutDdzT0n58UC7FsJe09rWIidmWan3y8CPlIdgO5Qb41jq9u6RD4UftDOr43S83K4f4ECvYxsNpC18oIUOUpWZ-kMWgmzSSZab0hM1jorZCInjZ40ylkjevguoTJ7fwDZVDdS:1vZvzl:lBxUfwAVuQdlKxcpzzgZxqln0bQiCOUpJ-0OHHW-C1I",
+    "expire_date": "2026-01-11T19:00:01.732Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8m83tfe4dfl7u5w5sqrb88jq5qonjuv4",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlmO_6Gk5wzW7nqNA8iR4qRC3B0ipYD2zcx7iQTbWtPWeUlTFmcxWHH6HRHowW0n-Q7tNkua27pMKHdFHrTL65z5eTncv4MKvX5rZLKBAhdgl61GVYoj9IHNCIVHZQrF4Mlar02MOULMyhOiHigacCTeH0L2OTI:1vZvG9:_wv_py0HvaIkkUMxT-AZES07czabcd1WstLy5Xr2E9g",
+    "expire_date": "2026-01-11T18:12:53.408Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ape94j75a1spz2t121lhstwsvwzmsikp",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAcGBCX7nsGMjAgVUOT0q6Md7dNutDtf-_9twi0LjWsPc9hZHEVZ3H63SKlZ2474Ae1-yTT1JZ5jHJX5EG7HCbOr9vh_h1U6nWrUQOBATYWCqDR-ULFExYEZUymFDdBJUZto7Oco_beOuWsQaTIxOLzBcpwN5k:1vZr0L:CcCt7CDBWB1VVG9Jrs0OSKG0t-TGzl6cVjY-NmhHEL8",
+    "expire_date": "2026-01-11T13:40:17.213Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "azl7z43jrn51a27j6mt6hajhwbyf8fhm",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8ZVy67zeQYQCpGkhKuzL-uzbpQrf3nHNfLOC21rCNvIQ5sQuz7PS7RaRHbjtId2y3zqm3dZkj3xV-0MGnnvLzerh_BxVH_dYFNEggZZI4F6OitihAerIKDUhnnCrSaZ-Tlx5I60RIXmYHWllhwbH3B7unNpg:1vZpq4:ECjvuRIWH54xCX0Wto_329JqkGXscjzZOdOvVFy21nw",
+    "expire_date": "2026-01-11T12:25:36.951Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "cdxcravgz1ys5345dbyxifd0snzmvc2a",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQKA-X7v0GMsyAVA0kpV0Z_11JutDdzT0n58UC7FsJe09rWIidmWan3y8CPlIdgO5Qb41jq9u6RD4UftDOr43S83K4f4ECvYxsNpC18oIUOUpWZ-kMWgmzSSZab0hM1jorZCInjZ40ylkjevguoTJ7fwDZVDdS:1vaEi9:TIdNVlSbZVfhKhfATteEEw3USLIxG2dCUN7OaJkCGXY",
+    "expire_date": "2026-01-12T14:59:05.588Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "dmjlb77uy85s2bdf7pcpnqbk9s2jjppy",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAcGBCX7nsGMjAgVUOT0q6Md7dNutDtf-_9twi0LjWsPc9hZHEVZ3H63SKlZ2474Ae1-yTT1JZ5jHJX5EG7HCbOr9vh_h1U6nWrUQOBATYWCqDR-ULFExYEZUymFDdBJUZto7Oco_beOuWsQaTIxOLzBcpwN5k:1vZYkz:F0fhEqxnVMlHKNJ-Lk_zibzDbklteFOigeP2NZ2AgxU",
+    "expire_date": "2026-01-10T18:11:13.310Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fg0cp4fmk92fka5r5foj40yv27k0x6os",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8ZVy67zeQYQCpGkhKuzL-uzbpQrf3nHNfLOC21rCNvIQ5sQuz7PS7RaRHbjtId2y3zqm3dZkj3xV-0MGnnvLzerh_BxVH_dYFNEggZZI4F6OitihAerIKDUhnnCrSaZ-Tlx5I60RIXmYHWllhwbH3B7unNpg:1vZZ0x:3ms8KP7uJELBTJZ4V9DNa_hOTiHRu-413GulSBUJh_g",
+    "expire_date": "2026-01-10T18:27:43.395Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "htngqv8yv6z4faw2v18bc9icut0xtvx3",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAcGBCX7nsGMjAgVUOT0q6Md7dNutDtf-_9twi0LjWsPc9hZHEVZ3H63SKlZ2474Ae1-yTT1JZ5jHJX5EG7HCbOr9vh_h1U6nWrUQOBATYWCqDR-ULFExYEZUymFDdBJUZto7Oco_beOuWsQaTIxOLzBcpwN5k:1va5sT:dlzAIIajk3spYG1u9Gs4eRLSwpKs_kZtSQbHbzf5-mg",
+    "expire_date": "2026-01-12T05:33:09.398Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "l2l39nxjwh3hgvglegcl9a0cxbg1le27",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAmwAAu3XsGMsAgVUOT0q6Md9cmXej2v_f-S0Ta1ha3wUucijgLFKffLVF-cN9BuVO_zTLPfV2mJHdFHnTI61z4eTncv4NGo31rKhUdaK-DRVXQBHCZUkLrDKuEIYAFMIF1VZXJIenKzIYheK3AV_H-ANG1N4s:1vZYrG:x4qZAnFfag_WRzCFEe0D5m7regXAjtQKcJlvk3ljLrk",
+    "expire_date": "2026-01-10T18:17:42.466Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "mdilz9h2z2nxscg68yyg96kpa16yj84u",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln4m5iSPmewdr1rHEC2FCcV4u4QKQW0b2beS0TY1hK3zkucSVyEGsXpd0RID647oTvUW5Op1XWZUe6KPGiXUyN-Xg_376BAL9_aA5NCDd45iwpsMExE49lTymhDyJp0ME5njZZ9YsU8DB5MRp-TCSjeHyypOTE:1va6nM:xFvnXfGNHSgal5l2CAunTdJuE3_sOLkjIPK5vPcvs_Y",
+    "expire_date": "2026-01-12T06:31:56.292Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "rnwywy2ukt7tx80qoos1sjxvh80hdvvy",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQKA-X7v0GMsyAVA0kpV0Z_11JutDdzT0n58UC7FsJe09rWIidmWan3y8CPlIdgO5Qb41jq9u6RD4UftDOr43S83K4f4ECvYxsNpC18oIUOUpWZ-kMWgmzSSZab0hM1jorZCInjZ40ylkjevguoTJ7fwDZVDdS:1va8DZ:8z9n90VetoN5AdXtkRwZSA74A08tkyxS0vBSNd7n8hI",
+    "expire_date": "2026-01-12T08:03:05.899Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "wtm7exjkqp4913pulwtmsw4blebh7o7t",
+  "fields": {
+    "session_data": "e30:1va5XY:DZu8WgRV3ycWYCc38kBAIxrN54i8gn8yjXPWdtJBiIg",
+    "expire_date": "2026-01-12T05:11:32.236Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ysvtb865ir7ur5mtt8orck3iah68e4ee",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFQKA-X7v0GMsyAVA0kpV0Z_11JutDdzT0n58UC7FsJe09rWIidmWan3y8CPlIdgO5Qb41jq9u6RD4UftDOr43S83K4f4ECvYxsNpC18oIUOUpWZ-kMWgmzSSZab0hM1jorZCInjZ40ylkjevguoTJ7fwDZVDdS:1vaR57:OaNRVTgZ7qrmmxIRi2SwKvrysv0xPjFsphJSjqeSBj0",
+    "expire_date": "2026-01-13T04:11:37.876Z"
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$bXl0eNwOPo5M8MEXaavnU7$g8hKurJGB84q53xX9hkOkGzMyM1etU2S9aup0fevjgs=",
+    "last_login": "2025-12-29T08:15:57.689Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-12-27T13:06:52.946Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": null,
+    "department": null,
+    "profile_image": "",
+    "reference_image": "",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$1THV1Ac6cMoCp8wo92XFtq$HlB78QXlCUJ/FjnXUbd1rwyXVNg1i3ozZBebDtke3Jo=",
+    "last_login": "2025-12-27T13:15:07.201Z",
+    "is_superuser": false,
+    "username": "Gangu",
+    "first_name": "Gangadhara Rao",
+    "last_name": "Pulicharla",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-27T13:08:26.170Z",
+    "user_type": "student",
+    "phone_number": "9347111348",
+    "student_id": "112331",
+    "department": "cse",
+    "profile_image": "profile_images/tables.PNG",
+    "reference_image": "",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$YwzzgSGM3twObpEQaOQZHA$dMbnn8GuNRVtxpR74nkn0Tc3eNXBMRtPS+brmtIq7CE=",
+    "last_login": "2025-12-27T13:11:03.493Z",
+    "is_superuser": false,
+    "username": "Gang",
+    "first_name": "",
+    "last_name": "",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-27T13:11:02.267Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "1123352",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Sucds7Gt22rnDSf2tfPbKR$x6Vsw3cUrU8x8D3ooKj8YxHLP3QyqqujkLsiCVNCOww=",
+    "last_login": "2025-12-30T06:58:42.786Z",
+    "is_superuser": false,
+    "username": "Mahipal",
+    "first_name": "",
+    "last_name": "",
+    "email": "mahi@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-27T13:15:58.893Z",
+    "user_type": "staff",
+    "phone_number": "",
+    "student_id": null,
+    "department": null,
+    "profile_image": "",
+    "reference_image": "",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$4PwJzppLsTnM2GQrxJXz2I$s5yp+b7lgyp9nqMp1SYcG1cIJotKO/bw7DWcStrVH0o=",
+    "last_login": "2025-12-29T05:40:51.264Z",
+    "is_superuser": false,
+    "username": "Anitha",
+    "first_name": "Anitha",
+    "last_name": "",
+    "email": "anitha@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-12-27T13:23:15.971Z",
+    "user_type": "staff",
+    "phone_number": "0347111348",
+    "student_id": null,
+    "department": null,
+    "profile_image": "",
+    "reference_image": "",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$f0d32F8zHPCooFDj6ZmzXT$BEZm59IQELUH7JGoJMD8dbekDodmcHl+na0QA+x6Mko=",
+    "last_login": "2025-12-27T18:29:57.711Z",
+    "is_superuser": false,
+    "username": "Ram",
+    "first_name": "",
+    "last_name": "",
+    "email": "Ram@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-27T16:21:30.312Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "896451",
+    "department": "cse",
+    "profile_image": "profile_images/Ram_profile.jpeg",
+    "reference_image": "",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$auYni8StuHVR78xOOUsVmu$UiqIPvg/T9/TII/+HTGSIs3SU0/jdiKO3HOcv7vEdI4=",
+    "last_login": "2025-12-27T19:19:29.962Z",
+    "is_superuser": false,
+    "username": "Siddu",
+    "first_name": "",
+    "last_name": "",
+    "email": "s@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-27T19:19:28.167Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "234wer",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$fhaskwKmv2y2pKXYfztXKU$oopGo923reI5hsjWvs1j8XPecf36BEkqvBNoz1gx+lk=",
+    "last_login": "2025-12-27T19:25:45.345Z",
+    "is_superuser": false,
+    "username": "Sita",
+    "first_name": "",
+    "last_name": "",
+    "email": "Sita@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-27T19:21:29.881Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "23wred",
+    "department": "cse",
+    "profile_image": "profile_images/Sita_profile.jpeg",
+    "reference_image": "",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$FMwj9E3OO2fEpZCS1CWiNN$KyKASmvR3Lo/lN4y0X/7BqSwuw2G/gWW+DsKkL4+vHE=",
+    "last_login": "2025-12-29T08:10:09.122Z",
+    "is_superuser": false,
+    "username": "Laxman",
+    "first_name": "",
+    "last_name": "",
+    "email": "lak@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T12:24:22.016Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "12waesdf",
+    "department": "cse",
+    "profile_image": "profile_images/passport.jpg",
+    "reference_image": "security_references/Laxman_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$uuqFAIZUssUSdGrRsJj9Bb$nptfPiik1CZA7TDXHV7M1iw7B9oe+q+nXOFISJH/Qrk=",
+    "last_login": "2025-12-28T17:37:52.050Z",
+    "is_superuser": false,
+    "username": "Bharat",
+    "first_name": "",
+    "last_name": "",
+    "email": "bharat@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T16:07:31.682Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "2qwer",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Bharat_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$jlcfzToYhPatxe2TmM8fFy$avdtgsRzexyjdnUR6tfONIQHSdjsmbzHEOz4MaWgpug=",
+    "last_login": "2025-12-30T04:06:35.505Z",
+    "is_superuser": false,
+    "username": "Eagle",
+    "first_name": "",
+    "last_name": "",
+    "email": "eagle@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T17:40:29.478Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "23ewdsc",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Eagle_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$jSE0VQccgOI81HoSERkp5v$MUuYfK21bwit0wNaOS6fOvH6swHPsQav4x1JZB8LawY=",
+    "last_login": "2025-12-28T18:04:28.630Z",
+    "is_superuser": false,
+    "username": "Ahmad",
+    "first_name": "",
+    "last_name": "",
+    "email": "ahmad@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T18:00:19.479Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "123wsed",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Ahmad_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$xW7yKmdS9bGfy06H8z4WH0$wcUZzzZMDHHs/WOmtfl9/DEOCGohWZEtQsJ8Bnto0zo=",
+    "last_login": "2025-12-28T18:08:54.036Z",
+    "is_superuser": false,
+    "username": "Aneef",
+    "first_name": "",
+    "last_name": "",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T18:07:18.116Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "23ed",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Aneef_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$4ojDUoc1PxQCmkrmXDo3nr$DwY3Ik/Quj2K+30igWfXN9AgcUiA0I2gw7JSGXvsLUQ=",
+    "last_login": "2025-12-28T18:12:53.323Z",
+    "is_superuser": false,
+    "username": "Varun",
+    "first_name": "",
+    "last_name": "",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T18:12:52.640Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "23d",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Varun_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 15,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$yh7g9Xarb5PJsvhuOGqzLa$jQTw3Fo3q6789uGd8dgerI38mZ+M4w9Azv5Og2g5XsY=",
+    "last_login": "2025-12-29T15:01:48.395Z",
+    "is_superuser": false,
+    "username": "Ramu",
+    "first_name": "",
+    "last_name": "",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T18:57:36.026Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "12wq",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Ramu_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 16,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$RvvspVnCRaVXmgpvV04JFI$kKubrhTa0n7rRCDb9w8WY2qdyHNdOlS6gSPABnW19PM=",
+    "last_login": "2025-12-28T19:03:34.339Z",
+    "is_superuser": false,
+    "username": "Situ",
+    "first_name": "",
+    "last_name": "",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T18:58:20.283Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "23wre",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Situ_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 17,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$8Z2Ec4PnGwDVZQipUJoJBO$rBLsk5E2mcByJeuSmCAdz0GKgnxvOK9DQZvTXhKbaeI=",
+    "last_login": "2025-12-28T18:59:34.644Z",
+    "is_superuser": false,
+    "username": "Vira",
+    "first_name": "",
+    "last_name": "",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-28T18:59:33.384Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "8676ty",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Vira_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 18,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$jxDrA7GZJotYDkSeFOkhwA$vASfnk0q9gfGhVMl2Cj/Z0fFSgRkO3Ij/6b7iO6hN18=",
+    "last_login": "2025-12-29T08:07:13.457Z",
+    "is_superuser": false,
+    "username": "Yesh",
+    "first_name": "",
+    "last_name": "",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-29T06:31:48.839Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "23j41a66h6",
+    "department": "cse",
+    "profile_image": "",
+    "reference_image": "security_references/Yesh_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 19,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$Vx26vghFc67ZcJPVcmFbHR$gK3R28fR/b2Xi+BexUahCBaq5guvBqfh00Or8Ee2MQk=",
+    "last_login": "2025-12-29T08:01:26.812Z",
+    "is_superuser": false,
+    "username": "Satya",
+    "first_name": "",
+    "last_name": "",
+    "email": "pulicharlagangu@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-12-29T08:01:24.746Z",
+    "user_type": "student",
+    "phone_number": "",
+    "student_id": "23J41A66H1",
+    "department": "CSM",
+    "profile_image": "",
+    "reference_image": "security_references/Satya_security.jpeg",
+    "face_encoding": null,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.subject",
+  "pk": 1,
+  "fields": {
+    "name": "Python",
+    "code": "CSM1",
+    "staff": 4,
+    "created_at": "2025-12-27T13:22:10.952Z",
+    "updated_at": "2025-12-27T13:22:10.952Z"
+  }
+},
+{
+  "model": "accounts.subject",
+  "pk": 2,
+  "fields": {
+    "name": "Machine Learning",
+    "code": "CSM2",
+    "staff": 5,
+    "created_at": "2025-12-27T13:24:37.468Z",
+    "updated_at": "2025-12-27T13:24:37.468Z"
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 6,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-28T18:05:35Z",
+    "end_time": "2025-12-28T18:13:40.883Z",
+    "is_active": false,
+    "session_code": "1B27F810",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 7,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-28T19:00:05Z",
+    "end_time": "2025-12-28T19:03:58.084Z",
+    "is_active": false,
+    "session_code": "A9E27950",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 8,
+  "fields": {
+    "teacher": 5,
+    "subject": 2,
+    "start_time": "2025-12-29T05:41:23.949Z",
+    "end_time": "2025-12-29T05:41:28.521Z",
+    "is_active": false,
+    "session_code": "65133DF0",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 9,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-29T05:43:28.584Z",
+    "end_time": "2025-12-29T05:48:02.046Z",
+    "is_active": false,
+    "session_code": "34F218A8",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 10,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-29T05:49:25.727Z",
+    "end_time": "2025-12-29T05:49:28.283Z",
+    "is_active": false,
+    "session_code": "D290BB21",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 11,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-29T06:12:30.942Z",
+    "end_time": "2025-12-29T06:34:09.140Z",
+    "is_active": false,
+    "session_code": "14E17744",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 12,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-29T08:03:16.109Z",
+    "end_time": "2025-12-29T15:02:37.300Z",
+    "is_active": false,
+    "session_code": "37BB4631",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 13,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-30T04:07:32.546Z",
+    "end_time": "2025-12-30T04:08:09.525Z",
+    "is_active": false,
+    "session_code": "2AC903F8",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 14,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-30T04:20:31.608Z",
+    "end_time": "2025-12-30T04:22:32.112Z",
+    "is_active": false,
+    "session_code": "FAA0516C",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancesession",
+  "pk": 15,
+  "fields": {
+    "teacher": 4,
+    "subject": 1,
+    "start_time": "2025-12-30T05:07:13.638Z",
+    "end_time": "2025-12-30T05:46:11.883Z",
+    "is_active": false,
+    "session_code": "1DBB9201",
+    "latitude": 17.4468,
+    "longitude": 78.4468,
+    "radius_meters": 20000
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 20,
+  "fields": {
+    "session": 6,
+    "student": 13,
+    "timestamp": "2025-12-28T18:09:01.932Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_7fuWkr3.jpg",
+    "gps_lat": 17.5597685,
+    "gps_long": 78.4504962
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 21,
+  "fields": {
+    "session": 6,
+    "student": 14,
+    "timestamp": "2025-12-28T18:12:59.507Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_w8M5iXW.jpg",
+    "gps_lat": 17.5597685,
+    "gps_long": 78.4504962
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 22,
+  "fields": {
+    "session": 7,
+    "student": 17,
+    "timestamp": "2025-12-28T19:02:17.071Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_S2vrhZd.jpg",
+    "gps_lat": 17.5439872,
+    "gps_long": 78.430208
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 23,
+  "fields": {
+    "session": 7,
+    "student": 15,
+    "timestamp": "2025-12-28T19:03:02.473Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_uWXPS1F.jpg",
+    "gps_lat": 17.5439872,
+    "gps_long": 78.430208
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 24,
+  "fields": {
+    "session": 7,
+    "student": 16,
+    "timestamp": "2025-12-28T19:03:41.650Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_lP8iAxh.jpg",
+    "gps_lat": 17.5439872,
+    "gps_long": 78.430208
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 29,
+  "fields": {
+    "session": 9,
+    "student": 9,
+    "timestamp": "2025-12-29T05:46:17.343Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_tJUx2T0.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 30,
+  "fields": {
+    "session": 9,
+    "student": 11,
+    "timestamp": "2025-12-29T05:47:37.572Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_kaTAhmt.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 41,
+  "fields": {
+    "session": 11,
+    "student": 9,
+    "timestamp": "2025-12-29T06:20:55.183Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_2xYgHVF.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 44,
+  "fields": {
+    "session": 11,
+    "student": 11,
+    "timestamp": "2025-12-29T06:22:44.952Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_fIWknZg.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 46,
+  "fields": {
+    "session": 11,
+    "student": 18,
+    "timestamp": "2025-12-29T06:32:47.076Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_WLu5ezc.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 52,
+  "fields": {
+    "session": 12,
+    "student": 19,
+    "timestamp": "2025-12-29T08:06:27.674Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_zQeQGGh.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 55,
+  "fields": {
+    "session": 12,
+    "student": 18,
+    "timestamp": "2025-12-29T08:08:16.727Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_EvMucL9.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 57,
+  "fields": {
+    "session": 12,
+    "student": 9,
+    "timestamp": "2025-12-29T08:10:47.226Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_K2tKaom.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 63,
+  "fields": {
+    "session": 12,
+    "student": 11,
+    "timestamp": "2025-12-29T08:12:23.121Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_P8uhsKT.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 66,
+  "fields": {
+    "session": 12,
+    "student": 15,
+    "timestamp": "2025-12-29T15:01:58.254Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_Sqrti29.jpg",
+    "gps_lat": 17.5439872,
+    "gps_long": 78.430208
+  }
+},
+{
+  "model": "attendance.attendancerecord",
+  "pk": 69,
+  "fields": {
+    "session": 14,
+    "student": 11,
+    "timestamp": "2025-12-30T04:21:59.061Z",
+    "status": "present",
+    "captured_image": "attendance_captures/attendance_bf4pSXN.jpg",
+    "gps_lat": null,
+    "gps_long": null
+  }
+},
+{
+  "model": "academics.department",
+  "pk": 1,
+  "fields": {
+    "name": "CSE",
+    "code": "CSE",
+    "description": "computer science and engineering"
+  }
+},
+{
+  "model": "academics.academicyear",
+  "pk": 1,
+  "fields": {
+    "name": "2025-2026",
+    "start_date": "2025-12-29",
+    "end_date": "2025-12-27",
+    "is_active": true
+  }
+},
+{
+  "model": "academics.semester",
+  "pk": 1,
+  "fields": {
+    "academic_year": 1,
+    "number": 6,
+    "start_date": "2025-12-29",
+    "end_date": "2025-12-27"
+  }
+},
+{
+  "model": "academics.subject",
+  "pk": 1,
+  "fields": {
+    "name": "Maths",
+    "subject_code": "C0501",
+    "department": 1,
+    "description": "this is the maths subject"
+  }
+},
+{
+  "model": "academics.subject",
+  "pk": 2,
+  "fields": {
+    "name": "Maths",
+    "subject_code": "C0511",
+    "department": 1,
+    "description": "this is the maths subject"
+  }
+},
+{
+  "model": "profiles.facultyprofile",
+  "pk": 1,
+  "fields": {
+    "user": 5,
+    "department": 1,
+    "staff_id": "2367yugh"
+  }
+},
+{
+  "model": "profiles.studentprofile",
+  "pk": 1,
+  "fields": {
+    "user": 9,
+    "department": 1,
+    "academic_year": 1,
+    "current_semester": 1,
+    "roll_number": "23J41A66H4"
+  }
+}
+]
