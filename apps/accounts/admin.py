@@ -17,6 +17,7 @@ class CustomUserAdmin(UserAdmin):
         ('Academic Info', {'fields': ('student_id', 'department')}),
         # Add the Profile Image field here so you can upload it
         ('Face Data', {'fields': ('profile_image',)}), 
+        ('Reference Data',{'fields': ('reference_image',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_type')}),
     )
 
