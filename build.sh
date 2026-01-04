@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Exit on error
 set -o errexit
-
 echo "--- Collecting Static Files ---"
 python manage.py collectstatic --no-input
 
