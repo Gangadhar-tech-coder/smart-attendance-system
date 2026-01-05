@@ -1,53 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Session Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Report - Faculty OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary: #0891b2; --primary-dark: #0e7490; --primary-light: #ecfeff;
+            --slate-900: #0f172a; --slate-800: #1e293b; --slate-600: #475569; --slate-400: #94a3b8; --slate-100: #f1f5f9;
+            --success: #10b981; --success-bg: #ecfdf5; --surface: #ffffff; --border: #e2e8f0; --sidebar-width: 260px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; text-decoration: none; }
+        body { background-color: var(--slate-100); color: var(--slate-900); height: 100vh; display: flex; overflow: hidden; }
+
+        /* SIDEBAR */
+        .sidebar { width: var(--sidebar-width); background: var(--slate-900); color: white; display: flex; flex-direction: column; padding: 24px; flex-shrink: 0; border-right: 1px solid var(--slate-800); }
+        .brand { font-size: 20px; font-weight: 700; margin-bottom: 40px; display: flex; align-items: center; gap: 12px; color: white; }
+        .brand-logo { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .nav-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; color: var(--slate-400); transition: all 0.2s ease; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3); }
+        .nav-item i { font-size: 18px; }
+        .user-profile-mini { border-top: 1px solid var(--slate-800); padding-top: 20px; display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 40px; height: 40px; background: var(--slate-800); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; border: 2px solid var(--slate-600); }
+
+        /* CONTENT */
+        .main-content { flex: 1; overflow-y: auto; padding: 32px 48px; }
+        .top-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .page-title h1 { font-size: 28px; font-weight: 700; color: var(--slate-900); margin-bottom: 4px; }
+        .page-title p { font-size: 15px; color: var(--slate-600); }
+        .btn-outline { padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--slate-600); }
+        .btn-outline:hover { border-color: var(--slate-400); background: var(--slate-100); color: var(--slate-900); }
+
+        /* VITALS */
+        .vitals-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+        .vital-card { background: var(--surface); padding: 20px; border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .vital-label { font-size: 12px; font-weight: 600; color: var(--slate-600); text-transform: uppercase; letter-spacing: 0.5px; }
+        .vital-value { font-size: 20px; font-weight: 700; color: var(--slate-900); }
+        .vital-icon { color: var(--primary); margin-bottom: 4px; font-size: 24px; }
+
+        /* TABLE */
+        .os-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .os-card-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; }
+        .os-card-header h3 { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; color: var(--slate-900); }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 16px 24px; font-size: 11px; text-transform: uppercase; font-weight: 600; color: var(--slate-600); background: var(--slate-100); border-bottom: 1px solid var(--border); letter-spacing: 0.5px; }
+        td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--slate-800); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
+        .empty-state { padding: 60px; text-align: center; color: var(--slate-400); }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="mb-4">
-        <a href="{% url 'view_reports' %}" class="text-decoration-none">&larr; Back to Reports</a>
-        <h2 class="mt-2">{{ session.subject.name }} - Attendance</h2>
-        <p class="text-muted">
-            Date: {{ session.start_time|date:"M d, Y" }} | 
-            Topic: {{ session.topic }} | 
-            <strong>Total Present: {{ total_present }}</strong>
-        </p>
-    </div>
-
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <table class="table table-striped align-middle">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Student Name</th>
-                        <th>Roll No / Username</th>
-                        <th>Time Marked</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for r in records %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td class="fw-bold">{{ r.student.first_name }} {{ r.student.last_name }}</td>
-                        <td>{{ r.student.username }}</td>
-                        <td>{{ r.timestamp|date:"H:i A" }}</td>
-                        <td><span class="badge bg-success">Present</span></td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center text-muted">No students marked attendance for this class.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo"><i class="bi bi-layers-fill"></i></div>
+            Faculty Portal
         </div>
-    </div>
-</div>
+        
+        <div class="nav-menu">
+            <a href="{% url 'dashboard' %}" class="nav-item">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
+            <a href="{% url 'select_class' %}" class="nav-item">
+                <i class="bi bi-plus-square-fill"></i> Start Class
+            </a>
+            <a href="{% url 'view_reports' %}" class="nav-item active">
+                <i class="bi bi-clock-history"></i> History
+            </a>
+            <a href="{% url 'attendance_calculator' %}" class="nav-item">
+                <i class="bi bi-calculator-fill"></i> Attendance Calculator
+            </a>
+        </div>
 
+        <div class="user-profile-mini">
+            <div class="avatar">{{ user.first_name|first|default:"F" }}</div>
+            <div style="flex:1; overflow:hidden;">
+                <div style="font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ user.get_full_name|default:user.username }}</div>
+                <div style="font-size:11px; color:var(--slate-400);">{{ user.department|default:"Faculty" }}</div>
+            </div>
+            <a href="{% url 'logout' %}" style="color: var(--slate-400);"><i class="bi bi-box-arrow-right"></i></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="page-title">
+                <h1>{{ session.subject.name }}</h1>
+                <p>Detailed attendance record for this session.</p>
+            </div>
+            <div class="actions">
+                <a href="{% url 'view_reports' %}" class="btn-outline">
+                    <i class="bi bi-arrow-left"></i> Back to History
+                </a>
+            </div>
+        </header>
+
+        <div class="vitals-row">
+            <div class="vital-card">
+                <i class="bi bi-calendar3 vital-icon"></i>
+                <div>
+                    <div class="vital-label">Date</div>
+                    <div class="vital-value">{{ session.start_time|date:"F d, Y" }}</div>
+                </div>
+            </div>
+            <div class="vital-card">
+                <i class="bi bi-clock vital-icon"></i>
+                <div>
+                    <div class="vital-label">Start Time</div>
+                    <div class="vital-value">{{ session.start_time|date:"h:i A" }}</div>
+                </div>
+            </div>
+            <div class="vital-card">
+                <i class="bi bi-people-fill vital-icon"></i>
+                <div>
+                    <div class="vital-label">Total Present</div>
+                    <div class="vital-value" style="color: var(--success);">{{ total_present }} Students</div>
+                </div>
+            </div>
+        </div>
+
+        <section class="os-card">
+            <div class="os-card-header">
+                <h3><i class="bi bi-person-lines-fill"></i> Attendance Log</h3>
+                <span style="font-size: 12px; color: var(--slate-600);">Topic: {{ session.topic|default:"General Class" }}</span>
+            </div>
+            
+            <div class="table-container">
+                {% if records %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">#</th>
+                            <th style="width: 35%;">Student Name</th>
+                            <th style="width: 25%;">Roll Number</th>
+                            <th style="width: 15%;">Time Marked</th>
+                            <th style="width: 15%;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in records %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <div style="font-weight: 600; color: var(--slate-900);">
+                                    {{ r.student.first_name }} {{ r.student.last_name }}
+                                </div>
+                            </td>
+                            <td style="font-family: monospace;">{{ r.student.username }}</td>
+                            <td style="color: var(--slate-600);">{{ r.timestamp|date:"h:i A" }}</td>
+                            <td>
+                                <span class="status-badge">
+                                    <i class="bi bi-check2"></i> Present
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="bi bi-people" style="font-size: 32px; display: block; margin-bottom: 16px; opacity: 0.5;"></i>
+                        <p>No students were marked present for this session.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
 </body>
 </html>

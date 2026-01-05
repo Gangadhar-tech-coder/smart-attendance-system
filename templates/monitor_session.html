@@ -2,65 +2,202 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Live Class Monitor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <meta http-equiv="refresh" content="5">
-</head>
-<body class="bg-light">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="5"> 
+    <title>Live Monitor - Faculty OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary: #0891b2; --primary-dark: #0e7490; --primary-light: #ecfeff;
+            --slate-900: #0f172a; --slate-800: #1e293b; --slate-600: #475569; --slate-400: #94a3b8; --slate-100: #f1f5f9;
+            --success: #10b981; --success-bg: #ecfdf5; --danger: #ef4444; --danger-bg: #fef2f2;
+            --surface: #ffffff; --border: #e2e8f0; --sidebar-width: 260px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; text-decoration: none; }
+        body { background-color: var(--slate-100); color: var(--slate-900); height: 100vh; display: flex; overflow: hidden; }
 
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-            <h3 class="mb-0">🟢 Live: {{ session.subject.name }}</h3>
-            <a href="{% url 'end_session' session.id %}" class="btn btn-danger fw-bold">End Session</a>
+        /* SIDEBAR */
+        .sidebar { width: var(--sidebar-width); background: var(--slate-900); color: white; display: flex; flex-direction: column; padding: 24px; flex-shrink: 0; border-right: 1px solid var(--slate-800); }
+        .brand { font-size: 20px; font-weight: 700; margin-bottom: 40px; display: flex; align-items: center; gap: 12px; color: white; }
+        .brand-logo { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .nav-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; color: var(--slate-400); transition: all 0.2s ease; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3); }
+        .nav-item i { font-size: 18px; }
+        .user-profile-mini { border-top: 1px solid var(--slate-800); padding-top: 20px; display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 40px; height: 40px; background: var(--slate-800); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; border: 2px solid var(--slate-600); }
+
+        /* CONTENT */
+        .main-content { flex: 1; overflow-y: auto; padding: 32px 48px; }
+        .top-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .page-title h1 { font-size: 28px; font-weight: 700; color: var(--slate-900); margin-bottom: 4px; display: flex; align-items: center; gap: 12px; }
+        .page-title p { font-size: 15px; color: var(--slate-600); }
+        
+        .live-badge-header { display: inline-flex; align-items: center; gap: 6px; background: var(--success-bg); color: var(--success); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; border: 1px solid #bbf7d0; }
+        .pulse-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .btn-danger { padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; background: var(--danger); color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); } 
+        .btn-danger:hover { background: #dc2626; transform: translateY(-1px); }
+
+        /* VITALS */
+        .vitals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 32px; }
+        .vital-card { background: var(--surface); padding: 24px; border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .vital-icon-box { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 8px; }
+        .icon-blue { background: var(--primary-light); color: var(--primary); }
+        .icon-green { background: var(--success-bg); color: var(--success); }
+        .vital-label { font-size: 13px; font-weight: 600; color: var(--slate-600); text-transform: uppercase; letter-spacing: 0.5px; }
+        .vital-value { font-size: 28px; font-weight: 700; color: var(--slate-900); letter-spacing: -1px; }
+        .vital-sub { font-size: 13px; color: var(--slate-400); font-weight: 500; }
+
+        /* TABLE */
+        .os-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .os-card-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; }
+        .os-card-header h3 { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; color: var(--slate-900); }
+        .refresh-status { font-size: 12px; color: var(--slate-400); display: flex; align-items: center; gap: 6px; }
+        .spin-icon { animation: spin 2s linear infinite; font-size: 14px; color: var(--primary); }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .table-container { overflow-x: auto; max-height: 500px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 16px 24px; font-size: 11px; text-transform: uppercase; font-weight: 600; color: var(--slate-600); background: var(--slate-100); border-bottom: 1px solid var(--border); letter-spacing: 0.5px; position: sticky; top: 0; }
+        td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--slate-800); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
+        .student-flex { display: flex; align-items: center; gap: 12px; }
+        .student-img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
+        .student-initial { width: 32px; height: 32px; border-radius: 50%; background: var(--slate-100); color: var(--slate-600); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; border: 1px solid var(--border); }
+        .status-verified { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
+        .empty-state { padding: 60px; text-align: center; color: var(--slate-400); }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo"><i class="bi bi-layers-fill"></i></div>
+            Faculty Portal
         </div>
-        <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <p class="text-muted">Teacher: <strong>{{ session.teacher.first_name }}</strong></p>
-                    <p class="text-muted">Started: {{ session.start_time|date:"H:i" }}</p>
+        
+        <div class="nav-menu">
+            <a href="{% url 'dashboard' %}" class="nav-item">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
+            <a href="{% url 'select_class' %}" class="nav-item active">
+                <i class="bi bi-plus-square-fill"></i> Start Class
+            </a>
+            <a href="{% url 'view_reports' %}" class="nav-item">
+                <i class="bi bi-clock-history"></i> History
+            </a>
+            <a href="{% url 'attendance_calculator' %}" class="nav-item">
+                <i class="bi bi-calculator-fill"></i> Attendance Calculator
+            </a>
+        </div>
+
+        <div class="user-profile-mini">
+            <div class="avatar">{{ user.first_name|first|default:"F" }}</div>
+            <div style="flex:1; overflow:hidden;">
+                <div style="font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ user.get_full_name|default:user.username }}</div>
+                <div style="font-size:11px; color:var(--slate-400);">{{ user.department|default:"Faculty" }}</div>
+            </div>
+            <a href="{% url 'logout' %}" style="color: var(--slate-400);"><i class="bi bi-box-arrow-right"></i></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div>
+                <div class="page-title">
+                    <h1>{{ session.subject.name }}</h1>
+                    <div class="live-badge-header"><span class="pulse-dot"></span> Live</div>
                 </div>
-                <div class="col-md-6 text-end">
-                    <h1 class="display-4 fw-bold text-success">{{ records.count }}</h1>
-                    <span class="text-muted">Students Present</span>
+                <p>Real-time attendance feed. Page refreshes automatically.</p>
+            </div>
+            <div class="actions">
+                <a href="{% url 'end_session' session.id %}" class="btn-danger">
+                    <i class="bi bi-stop-circle-fill"></i> End Session
+                </a>
+            </div>
+        </header>
+
+        <div class="vitals-grid">
+            <div class="vital-card">
+                <div class="vital-icon-box icon-green"><i class="bi bi-people-fill"></i></div>
+                <span class="vital-label">Total Present</span>
+                <div class="vital-value">{{ records.count }}</div>
+            </div>
+            <div class="vital-card">
+                <div class="vital-icon-box icon-blue"><i class="bi bi-clock-history"></i></div>
+                <span class="vital-label">Session Time</span>
+                <div class="vital-value">{{ session.start_time|date:"h:i A" }}</div>
+                <span class="vital-sub">Start Time</span>
+            </div>
+            <div class="vital-card">
+                <div class="vital-icon-box icon-blue"><i class="bi bi-geo-alt-fill"></i></div>
+                <span class="vital-label">Location</span>
+                <div class="vital-value">{{ session.radius_meters }}m</div>
+                <span class="vital-sub">Geo-Fence Radius</span>
+            </div>
+        </div>
+
+        <section class="os-card">
+            <div class="os-card-header">
+                <h3><i class="bi bi-broadcast"></i> Incoming Data Feed</h3>
+                <div class="refresh-status">
+                    <i class="bi bi-arrow-repeat spin-icon"></i> Syncing...
                 </div>
             </div>
-
-            <h5 class="border-bottom pb-2">Attendance Log</h5>
-            <table class="table table-striped table-hover mt-3">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Time</th>
-                        <th>Roll No</th>
-                        <th>Student Name</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for record in records %}
-                    <tr>
-                        <td>{{ record.timestamp|date:"H:i:s" }}</td>
-                        <td>{{ record.student.student_id }}</td>
-                        <td>
-                            {% if record.student.profile_image %}
-                                <img src="{{ record.student.profile_image.url }}" class="rounded-circle me-2" width="30" height="30" style="object-fit:cover;">
-                            {% endif %}
-                            {{ record.student.first_name }}
-                        </td>
-                        <td><span class="badge bg-success">Present</span></td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" class="text-center text-muted py-4">
-                            Waiting for students to join...
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
+            
+            <div class="table-container">
+                {% if records %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Time Logged</th>
+                            <th style="width: 20%;">Roll Number</th>
+                            <th style="width: 45%;">Student Identity</th>
+                            <th style="width: 20%;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td style="font-family: monospace; color: var(--slate-600);">
+                                {{ record.timestamp|date:"H:i:s" }}
+                            </td>
+                            <td style="font-weight: 600;">{{ record.student.student_id }}</td>
+                            <td>
+                                <div class="student-flex">
+                                    {% if record.student.profile_image %}
+                                        <img src="{{ record.student.profile_image.url }}" class="student-img" alt="Profile">
+                                    {% else %}
+                                        <div class="student-initial">{{ record.student.first_name|first }}</div>
+                                    {% endif %}
+                                    <div style="font-weight: 500; color: var(--slate-900);">
+                                        {{ record.student.first_name }} {{ record.student.last_name }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-verified">
+                                    <i class="bi bi-shield-check"></i> Verified
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="bi bi-broadcast" style="font-size: 32px; display: block; margin-bottom: 16px; opacity: 0.5;"></i>
+                        <h3 style="font-size: 16px; color: var(--slate-900); margin-bottom: 4px;">Waiting for connections...</h3>
+                        <p style="font-size: 13px;">Attendance records will appear here in real-time.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
 </body>
 </html>

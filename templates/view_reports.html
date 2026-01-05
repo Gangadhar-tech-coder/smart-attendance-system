@@ -1,58 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Attendance Reports</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - Smart Attendance OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary: #0891b2; --primary-dark: #0e7490; --primary-light: #ecfeff;
+            --slate-900: #0f172a; --slate-800: #1e293b; --slate-600: #475569; --slate-400: #94a3b8; --slate-100: #f1f5f9;
+            --success: #10b981; --success-bg: #ecfdf5; --surface: #ffffff; --border: #e2e8f0; --sidebar-width: 260px;
+            --danger: #ef4444; --danger-bg: #fef2f2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; text-decoration: none; }
+        body { background-color: var(--slate-100); color: var(--slate-900); height: 100vh; display: flex; overflow: hidden; }
+
+        /* SIDEBAR */
+        .sidebar { width: var(--sidebar-width); background: var(--slate-900); color: white; display: flex; flex-direction: column; padding: 24px; flex-shrink: 0; border-right: 1px solid var(--slate-800); }
+        .brand { font-size: 20px; font-weight: 700; margin-bottom: 40px; display: flex; align-items: center; gap: 12px; color: white; }
+        .brand-logo { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .nav-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; color: var(--slate-400); transition: all 0.2s ease; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3); }
+        .nav-item i { font-size: 18px; }
+        .user-profile-mini { border-top: 1px solid var(--slate-800); padding-top: 20px; display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 40px; height: 40px; background: var(--slate-800); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; border: 2px solid var(--slate-600); }
+
+        /* CONTENT */
+        .main-content { flex: 1; overflow-y: auto; padding: 32px 48px; }
+        .top-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .page-title h1 { font-size: 28px; font-weight: 700; color: var(--slate-900); margin-bottom: 4px; }
+        .page-title p { font-size: 15px; color: var(--slate-600); }
+        .btn-outline { padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--slate-600); }
+        .btn-outline:hover { border-color: var(--slate-400); background: var(--slate-100); }
+
+        /* TABLE */
+        .os-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .os-card-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; }
+        .os-card-header h3 { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; color: var(--slate-900); }
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 16px 24px; font-size: 11px; text-transform: uppercase; font-weight: 600; color: var(--slate-600); background: var(--slate-100); border-bottom: 1px solid var(--border); }
+        td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--slate-800); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
+        
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .status-live { background: var(--success-bg); color: var(--success); border: 1px solid #bbf7d0; }
+        .status-done { background: var(--slate-100); color: var(--slate-600); border: 1px solid var(--border); }
+        .status-absent { background: var(--danger-bg); color: var(--danger); border: 1px solid #fecaca; }
+        
+        .btn-view { padding: 6px 12px; font-size: 12px; border-radius: 6px; background: white; border: 1px solid var(--border); color: var(--slate-600); transition: all 0.2s; }
+        .btn-view:hover { border-color: var(--primary); color: var(--primary); }
+        .empty-state { padding: 60px; text-align: center; color: var(--slate-400); }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>📋 Past Class Reports</h2>
-        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
-    </div>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo"><i class="bi bi-layers-fill"></i></div>
+            {% if user.is_staff %}Faculty Portal{% else %}Student OS{% endif %}
+        </div>
+        
+        <div class="nav-menu">
+            <a href="{% url 'dashboard' %}" class="nav-item">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            {% if sessions %}
-                <table class="table table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Date</th>
-                            <th>Subject</th>
-                            {% comment %} <th>Topic</th> {% endcomment %}
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for s in sessions %}
-                        <tr>
-                            <td>{{ s.start_time|date:"M d, Y H:i" }}</td>
-                            <td class="fw-bold">{{ s.subject.name }}</td>
-                            {% comment %} <td>{{ s.topic }}</td> {% endcomment %}
-                            <td>
-                                {% if s.is_active %}
-                                    <span class="badge bg-success">Live Now</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">Completed</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{% url 'session_details' s.id %}" class="btn btn-sm btn-primary">
-                                    View Students
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            {% if user.is_staff %}
+                <a href="{% url 'select_class' %}" class="nav-item">
+                    <i class="bi bi-plus-square-fill"></i> Start Class
+                </a>
+                <a href="{% url 'view_reports' %}" class="nav-item active">
+                    <i class="bi bi-clock-history"></i> History
+                </a>
+                <a href="{% url 'attendance_calculator' %}" class="nav-item">
+                    <i class="bi bi-calculator-fill"></i> Attendance Calculator
+                </a>
+            
             {% else %}
-                <p class="text-center text-muted py-4">No classes found. Go take some attendance!</p>
+                <a href="{% url 'view_reports' %}" class="nav-item active">
+                    <i class="bi bi-clock-history"></i> History
+                </a>
             {% endif %}
         </div>
-    </div>
-</div>
 
+        <div class="user-profile-mini">
+            <div class="avatar">{{ user.first_name|first|default:"U" }}</div>
+            <div style="flex:1; overflow:hidden;">
+                <div style="font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ user.get_full_name|default:user.username }}</div>
+                <div style="font-size:11px; color:var(--slate-400);">{% if user.is_staff %}Faculty{% else %}Student{% endif %}</div>
+            </div>
+            <a href="{% url 'logout' %}" style="color: var(--slate-400);"><i class="bi bi-box-arrow-right"></i></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="page-title">
+                <h1>{% if user.is_staff %}Session Reports{% else %}My Attendance History{% endif %}</h1>
+                <p>View your past records and activity.</p>
+            </div>
+            <div class="actions">
+                <button class="btn btn-outline" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+            </div>
+        </header>
+
+        <section class="os-card">
+            <div class="os-card-header">
+                <h3><i class="bi bi-table"></i> {% if user.is_staff %}Classes Taught{% else %}Classes Attended{% endif %}</h3>
+            </div>
+            
+            <div class="table-container">
+                
+                {% if user.is_staff %}
+                    {% if sessions %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Date & Time</th>
+                                <th style="width: 35%;">Subject</th>
+                                <th style="width: 20%;">Status</th>
+                                <th style="width: 20%; text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in sessions %}
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600;">{{ s.start_time|date:"M d, Y" }}</div>
+                                    <div style="font-size: 12px; color: var(--slate-600);">{{ s.start_time|date:"h:i A" }}</div>
+                                </td>
+                                <td>
+                                    <div style="font-weight: 500; color: var(--slate-900);">{{ s.subject.name }}</div>
+                                    <div style="font-size: 12px; color: var(--slate-400);">{{ s.subject.code }}</div>
+                                </td>
+                                <td>
+                                    {% if s.is_active %}
+                                        <span class="status-badge status-live"><span style="width:6px; height:6px; background:currentColor; border-radius:50%;"></span> Live Now</span>
+                                    {% else %}
+                                        <span class="status-badge status-done"><i class="bi bi-check-all"></i> Completed</span>
+                                    {% endif %}
+                                </td>
+                                <td style="text-align: right;">
+                                    <a href="{% url 'session_details' s.id %}" class="btn-view">
+                                        View Details <i class="bi bi-arrow-right-short"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="bi bi-folder2-open" style="font-size: 32px; display: block; margin-bottom: 16px; opacity: 0.5;"></i>
+                            <p>No class reports found yet.</p>
+                        </div>
+                    {% endif %}
+
+                {% else %}
+                    {% if attendance_history %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Date & Time</th>
+                                <th style="width: 35%;">Subject</th>
+                                <th style="width: 25%;">Faculty</th>
+                                <th style="width: 15%;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in attendance_history %}
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600;">{{ record.timestamp|date:"M d, Y" }}</div>
+                                    <div style="font-size: 12px; color: var(--slate-600);">{{ record.timestamp|date:"h:i A" }}</div>
+                                </td>
+                                <td>
+                                    <div style="font-weight: 500; color: var(--slate-900);">{{ record.session.subject.name }}</div>
+                                    <div style="font-size: 12px; color: var(--slate-400);">{{ record.session.subject.code }}</div>
+                                </td>
+                                <td>{{ record.session.teacher.get_full_name }}</td>
+                                <td>
+                                    <span class="status-badge status-live"><i class="bi bi-check2"></i> Present</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="bi bi-journal-x" style="font-size: 32px; display: block; margin-bottom: 16px; opacity: 0.5;"></i>
+                            <p>You haven't attended any classes yet.</p>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        </section>
+    </main>
 </body>
 </html>

@@ -3,173 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Attendance System</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <title>Smart Attendance | Malla Reddy Engineering College</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <style>
-        /* Hero Section with Gradient */
-        .hero-section {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            position: relative;
+        :root {
+            /* Aqtos-inspired Theme */
+            --primary: #0891b2; /* Teal/Cyan */
+            --primary-dark: #0e7490;
+            --primary-light: #ecfeff;
+            
+            --slate-900: #0f172a; 
+            --slate-800: #1e293b;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-100: #f1f5f9; 
+            
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Navbar Customization */
-        .navbar {
-            background-color: rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(10px);
-            position: absolute;
-            top: 0;
-            width: 100%;
-            z-index: 100;
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            color: var(--slate-900);
+            background-color: var(--surface);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .navbar-brand {
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        /* Buttons */
-        .btn-custom-login {
-            background-color: white;
-            color: #0d6efd;
-            font-weight: bold;
-            border-radius: 50px;
-            padding: 12px 40px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-custom-login:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .btn-custom-signup {
-            border: 2px solid white;
-            color: white;
-            font-weight: bold;
-            border-radius: 50px;
-            padding: 12px 40px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-custom-signup:hover {
-            background-color: white;
-            color: #0d6efd;
-        }
-
-        /* Feature Cards */
-        .feature-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-            height: 100%;
-        }
+        /* UTILS */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        a { text-decoration: none; transition: all 0.2s var(--ease-out); }
         
-        .feature-card:hover {
-            transform: translateY(-10px);
+        /* ANIMATIONS (The Level Up) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--ease-out);
         }
 
-        .icon-box {
-            font-size: 2rem;
-            color: #0d6efd;
-            margin-bottom: 1rem;
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger delays for grids */
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* HEADER */
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+
+        .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; color: var(--slate-900); }
+        .brand-logo { 
+            width: 36px; height: 36px; 
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+            border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; 
+            color: white; 
+            box-shadow: 0 4px 6px -1px rgba(8, 145, 178, 0.2);
+        }
+        .brand-text span { color: var(--primary); }
+
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        
+        .nav-link { 
+            color: var(--slate-600); font-weight: 500; font-size: 14px; position: relative; 
+        }
+        .nav-link:hover { color: var(--primary); }
+        
+        /* Button Styles */
+        .btn-nav {
+            background: var(--slate-900); color: white; padding: 10px 24px;
+            border-radius: 8px; font-size: 14px; font-weight: 600;
+            transition: transform 0.2s var(--ease-out), background 0.2s;
+        }
+        .btn-nav:hover { background: black; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+        .btn-primary {
+            background: var(--primary); color: white; padding: 16px 36px;
+            border-radius: 12px; font-weight: 600; font-size: 16px;
+            box-shadow: 0 10px 15px -3px rgba(8, 145, 178, 0.3);
+            transition: all 0.3s var(--ease-out);
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-3px); 
+            box-shadow: 0 20px 25px -5px rgba(8, 145, 178, 0.4); 
+        }
+
+        .btn-secondary {
+            background: white; color: var(--slate-900); padding: 16px 36px;
+            border-radius: 12px; font-weight: 600; font-size: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s var(--ease-out);
+        }
+        .btn-secondary:hover { 
+            border-color: var(--slate-400); 
+            background: var(--slate-100); 
+            transform: translateY(-3px); 
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 140px 0 120px;
+            text-align: center;
+            position: relative;
+            /* Tech Dot Grid Background */
+            background-color: #ffffff;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        /* Soft Gradient Overlay fade */
+        .hero::after {
+            content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 150px;
+            background: linear-gradient(to bottom, transparent, white);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--primary-light); color: var(--primary-dark);
+            padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600;
+            margin-bottom: 24px; border: 1px solid rgba(8, 145, 178, 0.2);
+            animation: fadeInDown 0.8s var(--ease-out);
+        }
+
+        .hero h1 {
+            font-size: 56px; font-weight: 800; letter-spacing: -1.5px;
+            color: var(--slate-900); margin-bottom: 24px; line-height: 1.1;
+            animation: fadeInUp 0.8s var(--ease-out) 0.1s backwards;
+        }
+
+        .hero p {
+            font-size: 20px; color: var(--slate-500); max-width: 640px; margin: 0 auto 48px;
+            animation: fadeInUp 0.8s var(--ease-out) 0.2s backwards;
+        }
+
+        .hero-btns { 
+            display: flex; gap: 16px; justify-content: center; 
+            animation: fadeInUp 0.8s var(--ease-out) 0.3s backwards;
+        }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* FEATURES GRID */
+        .features { padding: 100px 0; background: var(--surface); position: relative; z-index: 10; }
+        
+        .section-header { text-align: center; margin-bottom: 80px; }
+        .section-label { color: var(--primary); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; display: block; }
+        .section-title { font-size: 36px; font-weight: 800; color: var(--slate-900); margin-bottom: 16px; letter-spacing: -0.5px; }
+        .section-desc { color: var(--slate-500); max-width: 600px; margin: 0 auto; font-size: 18px; }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            transition: all 0.4s var(--ease-out);
+            background: white;
+        }
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08);
+        }
+
+        .feature-icon {
+            width: 56px; height: 56px; background: var(--primary-light); color: var(--primary-dark);
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            font-size: 28px; margin-bottom: 24px; transition: transform 0.4s var(--ease-out);
+        }
+        .feature-card:hover .feature-icon { transform: scale(1.1) rotate(-5deg); }
+
+        .feature-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--slate-900); }
+        .feature-card p { color: var(--slate-500); font-size: 16px; line-height: 1.6; }
+
+        /* METRICS */
+        .metrics { padding: 100px 0; background: var(--slate-900); color: white; position: relative; overflow: hidden; }
+        
+        /* Subtle glow in background of metrics */
+        .metrics::before {
+            content: ''; position: absolute; top: -50%; left: -20%; width: 80%; height: 200%;
+            background: radial-gradient(circle, rgba(8, 145, 178, 0.15), transparent 60%);
+            pointer-events: none;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+            position: relative; z-index: 2;
+        }
+
+        .metric-card {
+            padding: 20px; transition: transform 0.3s ease;
+        }
+        .metric-card:hover { transform: translateY(-5px); }
+
+        .metric-card h2 { 
+            font-size: 56px; font-weight: 800; color: white; margin-bottom: 8px; letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .metric-card p { color: var(--slate-400); font-size: 16px; font-weight: 500; }
+        .metric-badge { 
+            display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+            margin-bottom: 16px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        /* IMPACT SECTION */
+        .impact { padding: 100px 0; background: var(--slate-100); }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .impact-card {
+            background: white; padding: 40px; border-radius: 20px;
+            border: 1px solid transparent;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            transition: all 0.3s var(--ease-out);
+        }
+        .impact-card:hover {
+            border-color: var(--border);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08);
+            transform: translateY(-5px);
+        }
+
+        .impact-card h4 { 
+            font-size: 18px; font-weight: 700; margin-bottom: 12px; 
+            display: flex; align-items: center; gap: 12px; color: var(--slate-900); 
+        }
+        .impact-card p { font-size: 15px; color: var(--slate-600); margin: 0; line-height: 1.6; }
+
+        /* FOOTER */
+        footer {
+            background: white; border-top: 1px solid var(--border);
+            padding: 60px 0 40px; text-align: center; color: var(--slate-500); font-size: 14px;
+        }
+        .footer-brand { margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; color: var(--slate-900); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 40px; }
+            .nav-links { display: none; } /* Simplified mobile nav */
+            .impact-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
+
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <header>
+        <div class="container nav-wrapper">
+            <div class="brand">
+                <div class="brand-logo"><i class="bi bi-layers-fill"></i></div>
+                <div class="brand-text">MREC <span>SmartAttendance</span></div>
+            </div>
+            <div class="nav-links">
+                <a href="/login/" class="nav-link">Login</a>
+                <a href="/signup/" class="btn-nav">Get Started <i class="bi bi-arrow-right-short"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                📷 SmartAttendance
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white me-3" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white me-3" href="#">Contact</a>
-                    </li>
-                </ul>
+            <div class="hero-badge"><i class="bi bi-stars"></i> The Future of Campus Operations</div>
+            <h1>Your Operating System for<br>Academic Integrity</h1>
+            <p>
+                Eliminate proxies and manual errors with AI-powered face verification. 
+                Secure, fast, and built for the modern technical campus.
+            </p>
+            <div class="hero-btns">
+                <a href="/login/" class="btn-primary">Enter System</a>
+                <a href="#features" class="btn-secondary">Learn More</a>
             </div>
         </div>
-    </nav>
+    </section>
 
-    <div class="hero-section text-center">
+    <section class="impact">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <h5 class="text-uppercase letter-spacing-2 mb-3" style="letter-spacing: 3px;">Welcome to</h5>
-                    <h1 class="display-2 fw-bold mb-4">Malla Reddy Engineering College</h1>
-                    <p class="lead mb-5 opacity-75">
-                        Experience the future of classroom management with our AI-Powered Face Recognition Attendance System.
-                    </p>
-                    
-                    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                        <a href="/login/" class="btn btn-custom-login">
-                            Login
-                        </a>
-                        <a href="/signup/" class="btn btn-custom-signup">
-                            Sign Up
-                        </a>
-                    </div>
+            <div class="impact-grid">
+                <div class="impact-card reveal reveal-delay-1">
+                    <h4><i class="bi bi-person-workspace text-primary"></i> For Faculty</h4>
+                    <p>Automate attendance tracking instantly. Focus on teaching while our OS handles the logs and generates exportable reports.</p>
+                </div>
+                <div class="impact-card reveal reveal-delay-2">
+                    <h4><i class="bi bi-backpack4 text-primary"></i> For Students</h4>
+                    <p>Mark attendance in seconds with a simple selfie. View your attendance history transparency and reduce disputes.</p>
+                </div>
+                <div class="impact-card reveal reveal-delay-3">
+                    <h4><i class="bi bi-building-check text-primary"></i> For Admin</h4>
+                    <p>Centralized data dashboard. Monitor campus-wide attendance trends, ensure compliance, and streamline operations.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="container py-5 mt-5">
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <div class="icon-box">⚡</div>
-                    <h3>Fast & Secure</h3>
-                    <p class="text-muted">Mark attendance in seconds using advanced face recognition technology.</p>
-                </div>
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">Why Smart Attendance?</span>
+                <h2 class="section-title">Built for Accuracy & Speed</h2>
+                <p class="section-desc">Traditional roll calls are slow and prone to errors. We replaced them with a system that works as fast as you do.</p>
             </div>
-            <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <div class="icon-box">📊</div>
-                    <h3>Live Analytics</h3>
-                    <p class="text-muted">Track student performance and attendance trends in real-time.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon"><i class="bi bi-upc-scan"></i></div>
+                    <h3>Face Verification</h3>
+                    <p>Advanced AI algorithms verify student identity in real-time, ensuring physical presence and completely eliminating proxy attendance.</p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card text-center">
-                    <div class="icon-box">📱</div>
-                    <h3>Mobile Ready</h3>
-                    <p class="text-muted">Access your dashboard from any device, anywhere, anytime.</p>
+                <div class="feature-card reveal reveal-delay-2">
+                    <div class="feature-icon"><i class="bi bi-geo-alt"></i></div>
+                    <h3>Geo-Fencing</h3>
+                    <p>Attendance is restricted to campus boundaries. Students must be physically present in the classroom to mark themselves present.</p>
+                </div>
+                <div class="feature-card reveal reveal-delay-3">
+                    <div class="feature-icon"><i class="bi bi-shield-lock"></i></div>
+                    <h3>Secure & Private</h3>
+                    <p>Data is encrypted and stored securely. Biometric data is used strictly for academic verification purposes and never shared.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <section class="metrics">
+        <div class="container">
+            <div class="section-header reveal" style="margin-bottom: 60px;">
+                <span class="section-label" style="color: var(--primary);">System Pulse</span>
+                <h2 class="section-title" style="color: white;">Recent Milestones</h2>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card reveal reveal-delay-1">
+                    <span class="metric-badge">Hall of Fame</span>
+                    <h2>1,200+</h2>
+                    <p>Attendance Records Verified</p>
+                </div>
+                <div class="metric-card reveal reveal-delay-2">
+                    <span class="metric-badge">Precision</span>
+                    <h2>99.8%</h2>
+                    <p>Face Recognition Accuracy</p>
+                </div>
+                <div class="metric-card reveal reveal-delay-3">
+                    <span class="metric-badge">Reliability</span>
+                    <h2>24/7</h2>
+                    <p>System Availability</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-brand">
+                <i class="bi bi-layers-fill" style="color: var(--primary);"></i> SmartAttendance OS
+            </div>
+            <p>&copy; 2025 Malla Reddy Engineering College. All rights reserved.</p>
+            <div style="margin-top: 10px; font-size: 12px; opacity: 0.6;">
+                Designed for Academic Excellence
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // Simple console log to prove JS is working
-        console.log("Smart Attendance System Loaded");
-        
-        // Optional: Add a simple animation on load
-        document.addEventListener('DOMContentLoaded', function() {
-            const hero = document.querySelector('.hero-section h1');
-            hero.style.opacity = '0';
-            hero.style.transition = 'opacity 1s ease-in';
-            setTimeout(() => {
-                hero.style.opacity = '1';
-            }, 200);
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, observerOptions);
+
+            const elements = document.querySelectorAll('.reveal');
+            elements.forEach(el => observer.observe(el));
         });
     </script>
+
 </body>
 </html>

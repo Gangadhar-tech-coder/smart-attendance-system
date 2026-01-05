@@ -2,45 +2,123 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Select Class</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Session - Faculty OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary: #0891b2; --primary-dark: #0e7490; --primary-light: #ecfeff;
+            --slate-900: #0f172a; --slate-800: #1e293b; --slate-600: #475569; --slate-400: #94a3b8; --slate-100: #f1f5f9;
+            --surface: #ffffff; --border: #e2e8f0; --sidebar-width: 260px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; text-decoration: none; }
+        body { background-color: var(--slate-100); color: var(--slate-900); height: 100vh; display: flex; overflow: hidden; }
+
+        /* SIDEBAR */
+        .sidebar { width: var(--sidebar-width); background: var(--slate-900); color: white; display: flex; flex-direction: column; padding: 24px; flex-shrink: 0; border-right: 1px solid var(--slate-800); }
+        .brand { font-size: 20px; font-weight: 700; margin-bottom: 40px; display: flex; align-items: center; gap: 12px; color: white; }
+        .brand-logo { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .nav-item { padding: 12px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; color: var(--slate-400); transition: all 0.2s ease; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-item.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3); }
+        .nav-item i { font-size: 18px; }
+        .user-profile-mini { border-top: 1px solid var(--slate-800); padding-top: 20px; display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 40px; height: 40px; background: var(--slate-800); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; border: 2px solid var(--slate-600); }
+
+        /* CONTENT */
+        .main-content { flex: 1; overflow-y: auto; padding: 32px 48px; }
+        .top-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .page-title h1 { font-size: 28px; font-weight: 700; color: var(--slate-900); margin-bottom: 4px; }
+        .page-title p { font-size: 15px; color: var(--slate-600); }
+        .btn-outline { padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--slate-600); } 
+        .btn-outline:hover { border-color: var(--slate-400); background: var(--slate-100); color: var(--slate-900); }
+
+        /* GRID */
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        .subject-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s ease-out; box-shadow: 0 2px 4px rgba(0,0,0,0.02); position: relative; overflow: hidden; }
+        .subject-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 12px 20px -5px rgba(8, 145, 178, 0.15); }
+        .subject-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--primary); opacity: 0; transition: opacity 0.2s; }
+        .subject-card:hover::before { opacity: 1; }
+        .subject-info { display: flex; align-items: center; gap: 16px; }
+        .subject-icon { width: 48px; height: 48px; background: var(--primary-light); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: transform 0.2s; }
+        .subject-card:hover .subject-icon { transform: scale(1.1) rotate(-5deg); background: var(--primary); color: white; }
+        .subject-text h3 { font-size: 16px; font-weight: 700; color: var(--slate-900); margin-bottom: 4px; }
+        .subject-text p { font-size: 13px; color: var(--slate-600); font-family: monospace; letter-spacing: -0.5px; }
+        .action-arrow { width: 32px; height: 32px; border-radius: 50%; background: var(--slate-100); color: var(--slate-400); display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .subject-card:hover .action-arrow { background: var(--primary); color: white; transform: translateX(4px); }
+        .empty-state { grid-column: 1 / -1; padding: 80px; text-align: center; background: var(--surface); border-radius: 16px; border: 1px dashed var(--border); }
+        .empty-icon { font-size: 48px; color: var(--slate-400); margin-bottom: 16px; display: block; }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<nav class="navbar navbar-dark bg-dark mb-4">
-    <div class="container">
-        <span class="navbar-brand mb-0 h1">Start Attendance</span>
-        <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-sm">Back to Dashboard</a>
-    </div>
-</nav>
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Select a Subject to Start</h4>
-                </div>
-                <div class="list-group list-group-flush">
-                    {% for subject in subjects %}
-                        <a href="{% url 'create_session' subject.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
-                            <div>
-                                <h5 class="mb-1">{{ subject.name }}</h5>
-                                <small class="text-muted">Code: {{ subject.code }}</small>
-                            </div>
-                            <span class="btn btn-success btn-sm fw-bold">Start Class &rarr;</span>
-                        </a>
-                    {% empty %}
-                        <div class="p-4 text-center">
-                            <p class="text-muted mb-0">You have no subjects assigned.</p>
-                            <small>Contact the admin to assign subjects to your account.</small>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo"><i class="bi bi-layers-fill"></i></div>
+            Faculty Portal
         </div>
-    </div>
-</div>
+        
+        <div class="nav-menu">
+            <a href="{% url 'dashboard' %}" class="nav-item">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="bi bi-plus-square-fill"></i> Start Class
+            </a>
+            <a href="{% url 'view_reports' %}" class="nav-item">
+                <i class="bi bi-clock-history"></i> History
+            </a>
+            <a href="{% url 'attendance_calculator' %}" class="nav-item">
+                <i class="bi bi-calculator-fill"></i> Attendance Calculator
+            </a>
+        </div>
 
+        <div class="user-profile-mini">
+            <div class="avatar">{{ user.first_name|first|default:"F" }}</div>
+            <div style="flex:1; overflow:hidden;">
+                <div style="font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ user.get_full_name|default:user.username }}</div>
+                <div style="font-size:11px; color:var(--slate-400);">{{ user.department|default:"Faculty" }}</div>
+            </div>
+            <a href="{% url 'logout' %}" style="color: var(--slate-400);"><i class="bi bi-box-arrow-right"></i></a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="page-title">
+                <h1>Start New Session</h1>
+                <p>Select a subject below to launch the attendance system.</p>
+            </div>
+            <div class="actions">
+                <a href="{% url 'dashboard' %}" class="btn-outline">
+                    <i class="bi bi-arrow-left"></i> Cancel
+                </a>
+            </div>
+        </header>
+
+        <div class="subject-grid">
+            {% for subject in subjects %}
+            <a href="{% url 'create_session' subject.id %}" class="subject-card">
+                <div class="subject-info">
+                    <div class="subject-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
+                    <div class="subject-text">
+                        <h3>{{ subject.name }}</h3>
+                        <p>{{ subject.code }}</p>
+                    </div>
+                </div>
+                <div class="action-arrow"><i class="bi bi-arrow-right"></i></div>
+            </a>
+            {% empty %}
+            <div class="empty-state">
+                <i class="bi bi-journal-x empty-icon"></i>
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No Subjects Found</h3>
+                <p style="color: var(--slate-600); font-size: 14px;">Contact the administrator to have subjects assigned to your account.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
 </body>
 </html>
