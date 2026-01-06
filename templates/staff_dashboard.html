@@ -95,9 +95,9 @@
             <a href="{% url 'select_class' %}" class="nav-item">
                 <i class="bi bi-plus-square-fill"></i> Start Class
             </a>
-            <a href="{% url 'view_reports' %}" class="nav-item">
+            {% comment %} <a href="{% url 'view_reports' %}" class="nav-item">
                 <i class="bi bi-clock-history"></i> History
-            </a>
+            </a> {% endcomment %}
             <a href="{% url 'attendance_calculator' %}" class="nav-item">
                 <i class="bi bi-calculator-fill"></i> Attendance Calculator
             </a>
