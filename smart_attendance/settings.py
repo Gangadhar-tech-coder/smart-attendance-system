@@ -43,10 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'apps.accounts',
-    'apps.attendance',
-    'academics',
-    'profiles',
+    # 'apps.accounts',
+    # 'apps.attendance',
+    # 'academics',
+    # 'profiles',
+    'apps.accounts.apps.AccountsConfig',  # This will load signals
+    'academics.apps.AcademicsConfig',
+    'profiles.apps.ProfilesConfig',
+    'apps.attendance.apps.AttendanceConfig',
 ]
 
 MIDDLEWARE = [
