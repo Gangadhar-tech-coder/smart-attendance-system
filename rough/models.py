@@ -1,6 +1,6 @@
 # attendance/models.py
 """
-FINAL Attendance models for SubjectAllocation-based structure
+Enhanced Attendance models integrating PostgreSQL schema features
 """
 
 from django.db import models
@@ -12,8 +12,7 @@ from django.core.exceptions import ValidationError
 
 class AttendanceSession(models.Model):
     """
-    Attendance Session linked to SubjectAllocation
-    Faculty creates session for their assigned Subject-Section combination
+    Enhanced Attendance Session with location tracking and verification
     """
     SESSION_TYPE_CHOICES = [
         ('LECTURE', 'Lecture'),
@@ -30,12 +29,32 @@ class AttendanceSession(models.Model):
         related_name='started_sessions'
     )
     
-    # IMPORTANT: Link to SubjectAllocation (contains Subject + Section)
-    subject_allocation = models.ForeignKey(
-        'academics.SubjectAllocation',
+    # Subject - Keep for backward compatibility
+    subject = models.ForeignKey(
+        'accounts.Subject',  # or 'academics.Subject' depending on your choice
         on_delete=models.CASCADE,
         related_name='attendance_sessions',
-        help_text="Faculty's subject-section allocation"
+        null=True,
+        blank=True
+    )
+    
+    # NEW: Link to course if using Course model
+    course = models.ForeignKey(
+        'academics.Course',
+        on_delete=models.CASCADE,
+        related_name='attendance_sessions',
+        null=True,
+        blank=True
+    )
+    
+    # NEW: Link to SubjectAllocation for better tracking
+    allocation = models.ForeignKey(
+        'academics.SubjectAllocation',
+        on_delete=models.CASCADE,
+        related_name='sessions',
+        null=True,
+        blank=True,
+        help_text="Links to the faculty's subject allocation"
     )
     
     # Time tracking
@@ -51,15 +70,24 @@ class AttendanceSession(models.Model):
         choices=SESSION_TYPE_CHOICES,
         default='LECTURE'
     )
-    topic = models.CharField(max_length=200, blank=True, null=True)
     remarks = models.TextField(blank=True, null=True)
 
-    # Location Constraints
-    latitude = models.FloatField(default=17.4468, help_text="Class latitude") 
-    longitude = models.FloatField(default=78.4468, help_text="Class longitude")
-    radius_meters = models.IntegerField(default=20000, help_text="Allowed radius in meters")
+    # --- Location Constraints ---
+    latitude = models.FloatField(
+        default=17.4468, 
+        help_text="Class Location Latitude"
+    ) 
+    longitude = models.FloatField(
+        default=78.4468, 
+        help_text="Class Location Longitude"
+    )
+    radius_meters = models.IntegerField(
+        default=200, 
+        help_text="Allowed radius in meters"
+    )
     
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True,null=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
@@ -67,12 +95,13 @@ class AttendanceSession(models.Model):
         indexes = [
             models.Index(fields=['is_active', 'session_date']),
             models.Index(fields=['teacher', 'is_active']),
+            models.Index(fields=['session_date']),
         ]
         constraints = [
             models.UniqueConstraint(
                 fields=['teacher'],
                 condition=models.Q(is_active=True),
-                name='one_active_session_per_teacher'
+                name='single_active_session_per_teacher'
             )
         ]
 
@@ -81,28 +110,32 @@ class AttendanceSession(models.Model):
             import uuid
             self.session_code = str(uuid.uuid4())[:8].upper()
         super().save(*args, **kwargs)
+    
+    def clean(self):
+        """Validate that subject or course is set"""
+        if not self.subject and not self.course:
+            raise ValidationError('Either subject or course must be set.')
+        
+        # Ensure only one active session per faculty
+        if self.is_active:
+            existing = AttendanceSession.objects.filter(
+                teacher=self.teacher,
+                is_active=True
+            ).exclude(pk=self.pk)
+            if existing.exists():
+                raise ValidationError('Teacher can only have one active session at a time.')
 
     def __str__(self):
-        return f"{self.subject_allocation.subject.name} - {self.subject_allocation.section.full_name} ({self.session_date})"
-    
-    @property
-    def subject(self):
-        """Get subject from allocation"""
-        return self.subject_allocation.subject
-    
-    @property
-    def section(self):
-        """Get section from allocation"""
-        return self.subject_allocation.section
+        subject_name = self.course.name if self.course else (self.subject.name if self.subject else 'Unknown')
+        return f"{subject_name} - {self.start_time.strftime('%Y-%m-%d %H:%M')}"
     
     def get_attendance_count(self):
-        """Get attendance statistics"""
+        """Get attendance statistics for this session"""
         records = self.records.all()
         return {
             'total': records.count(),
             'present': records.filter(status='present').count(),
             'absent': records.filter(status='absent').count(),
-            'late': records.filter(status='late').count(),
             'pending': records.filter(status='PENDING').count(),
         }
     
@@ -115,12 +148,12 @@ class AttendanceSession(models.Model):
 
 class AttendanceRecord(models.Model):
     """
-    Individual attendance record for a student in a session
+    Enhanced Attendance Record with verification and geolocation
     """
     STATUS_CHOICES = [
         ('present', 'Present'),
         ('absent', 'Absent'),
-        ('late', 'Late'),
+        ('late', 'Late'),  # NEW: Added late status
         ('PENDING', 'Pending Verification'),
     ]
 
@@ -135,29 +168,47 @@ class AttendanceRecord(models.Model):
         limit_choices_to={'user_type': 'student'},
         related_name='attendance_records'
     )
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    timestamp = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=20, 
+        choices=STATUS_CHOICES, 
+        default='PENDING'
+    )
 
-    # Face Recognition & Image
-    captured_image = models.ImageField(upload_to='attendance_captures/', null=True, blank=True)
-    verification_score = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, blank=True,
-        validators=[MinValueValidator(0), MaxValueValidator(100)]
+    # --- Face Recognition & Image Capture ---
+    captured_image = models.ImageField(
+        upload_to='attendance_captures/', 
+        null=True, 
+        blank=True
     )
     
-    # GPS/Location
+    # NEW: Verification score from face recognition
+    verification_score = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        help_text="Face recognition confidence score (0-100)"
+    )
+    
+    # --- GPS/Location Data ---
     gps_lat = models.FloatField(null=True, blank=True)
     gps_long = models.FloatField(null=True, blank=True)
+    
+    # NEW: IP and Device tracking
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     device_info = models.CharField(max_length=255, blank=True, null=True)
     
-    # Timestamps
-    timestamp = models.DateTimeField(auto_now_add=True)
+    # NEW: Marked at timestamp (when attendance was marked)
     marked_at = models.DateTimeField(default=timezone.now)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True,null=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = 'attendance_records'
+        db_table = 'attendance'
         unique_together = ['session', 'student']
         indexes = [
             models.Index(fields=['status']),
@@ -168,12 +219,17 @@ class AttendanceRecord(models.Model):
         return f"{self.student.username} - {self.get_status_display()}"
     
     def verify_location(self):
-        """Verify if student is within allowed location"""
+        """
+        Verify if student is within allowed location radius
+        Returns: (is_valid, distance_meters)
+        """
         if not self.gps_lat or not self.gps_long:
             return False, None
         
         from math import radians, sin, cos, sqrt, atan2
-        R = 6371000  # Earth radius in meters
+        
+        # Haversine formula to calculate distance
+        R = 6371000  # Earth's radius in meters
         
         lat1 = radians(self.session.latitude)
         lat2 = radians(self.gps_lat)
@@ -188,16 +244,24 @@ class AttendanceRecord(models.Model):
         return is_valid, distance
     
     def auto_verify(self):
-        """Auto-verify based on score, location, time"""
+        """
+        Automatically verify attendance based on:
+        - Verification score
+        - Location
+        - Time
+        """
         issues = []
         
+        # Check verification score
         if self.verification_score and self.verification_score < 70:
             issues.append("Low face recognition score")
         
+        # Check location
         is_location_valid, distance = self.verify_location()
-        if not is_location_valid and distance:
-            issues.append(f"Outside location (distance: {distance:.0f}m)")
+        if not is_location_valid:
+            issues.append(f"Outside allowed location (distance: {distance:.0f}m)")
         
+        # Check time (if late)
         time_diff = (self.marked_at - self.session.start_time).total_seconds() / 60
         if time_diff > 15:
             self.status = 'late'
@@ -205,6 +269,7 @@ class AttendanceRecord(models.Model):
         elif time_diff > 10:
             self.status = 'late'
         
+        # If no issues, mark as present
         if not issues:
             self.status = 'present'
         
@@ -213,7 +278,9 @@ class AttendanceRecord(models.Model):
 
 
 class Permission(models.Model):
-    """Student leave/permission requests"""
+    """
+    NEW: Student leave/permission requests
+    """
     PERMISSION_TYPE_CHOICES = [
         ('SPORTS', 'Sports Activity'),
         ('OUTDOOR', 'Outdoor Activity'),
@@ -233,29 +300,46 @@ class Permission(models.Model):
         on_delete=models.CASCADE,
         related_name='permissions'
     )
-    permission_type = models.CharField(max_length=10, choices=PERMISSION_TYPE_CHOICES)
+    permission_type = models.CharField(
+        max_length=10, 
+        choices=PERMISSION_TYPE_CHOICES
+    )
     reason = models.TextField()
     date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='PENDING'
+    )
     granted_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='permissions_granted'
+        related_name='permissions_granted',
+        limit_choices_to={'user_type__in': ['hod', 'staff', 'admin']}
     )
     remarks = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now,null=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        db_table = 'student_permissions'
+        db_table = 'permissions'
         indexes = [
             models.Index(fields=['student', 'date']),
             models.Index(fields=['status']),
         ]
     
+    def clean(self):
+        """Validate that end_time is after start_time"""
+        if self.end_time and self.start_time and self.end_time <= self.start_time:
+            raise ValidationError('End time must be after start time.')
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+    
     def __str__(self):
-        return f"{self.student.roll_number if hasattr(self.student, 'course_allocation') else self.student.user.username} - {self.get_permission_type_display()}"
+        return f"{self.student.roll_number} - {self.get_permission_type_display()} - {self.get_status_display()}"

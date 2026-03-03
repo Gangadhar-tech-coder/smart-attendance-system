@@ -74,22 +74,22 @@ class User(AbstractUser):
 # --- SUBJECT MODEL (For Staff) ---
 # Note: This is being kept for backward compatibility
 # Consider migrating to academics.Subject instead
-class Subject(models.Model):
-    """
-    Legacy Subject model - Consider using academics.Subject instead
-    Keeping for backward compatibility
-    """
-    name = models.CharField(max_length=100)
-    code = models.CharField(max_length=20, unique=True)
+# class Subject(models.Model):
+#     """
+#     Legacy Subject model - Consider using academics.Subject instead
+#     Keeping for backward compatibility
+#     """
+#     name = models.CharField(max_length=100)
+#     code = models.CharField(max_length=20, unique=True)
     
-    staff = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
-        limit_choices_to={'user_type__in': ['staff', 'hod']},  # Updated to include HOD
-        related_name='subjects'
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+#     staff = models.ForeignKey(
+#         User, 
+#         on_delete=models.CASCADE, 
+#         limit_choices_to={'user_type__in': ['staff', 'hod']},  # Updated to include HOD
+#         related_name='subjects'
+#     )
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
     
-    def __str__(self):
-        return f"{self.name} ({self.code})"
+#     def __str__(self):
+#         return f"{self.name} ({self.code})"

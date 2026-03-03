@@ -84,10 +84,10 @@
             <a href="{% url 'dashboard' %}" class="nav-item">
                 <i class="bi bi-grid-1x2-fill"></i> Dashboard
             </a>
-            <a href="{% url 'select_class' %}" class="nav-item">
+            <a href="{% url 'attendance:select_class' %}" class="nav-item">
                 <i class="bi bi-plus-square-fill"></i> Start Class
             </a>
-            <a href="{% url 'view_reports' %}" class="nav-item">
+            <a href="{% url 'attendance:view_reports' %}" class="nav-item">
                 <i class="bi bi-clock-history"></i> History
             </a>
             <a href="#" class="nav-item active">
@@ -112,8 +112,9 @@
                 <p>Analyze student attendance metrics and generate reports.</p>
             </div>
             <div class="actions">
-                {% if selected_subject %}
-                <a href="?subject={{ selected_subject.id }}&download=1" onclick="downloadExcel(event, {{ selected_subject.id }})" class="btn btn-primary">
+                {% if selected_allocation %}
+                <!-- FIXED: use allocation id for download -->
+                <a href="?allocation={{ selected_allocation.id }}&download=1" onclick="downloadExcel(event, {{ selected_allocation.id }})" class="btn btn-primary">
                     <i class="bi bi-download"></i> Export Excel
                 </a>
                 {% endif %}
@@ -127,15 +128,16 @@
             <div class="selector-label">Select Course:</div>
             <select id="subjectSelect" onchange="changeSubject(this.value)">
                 <option value="">-- Choose a subject to analyze --</option>
-                {% for subject in subjects %}
-                <option value="{{ subject.id }}" {% if selected_subject and selected_subject.id == subject.id %}selected{% endif %}>
-                    {{ subject.name }} ({{ subject.code }})
+                {% for allocation in allocations %}
+                <!-- FIXED: allocation.id as value, subject_code instead of code -->
+                <option value="{{ allocation.id }}" {% if selected_allocation and selected_allocation.id == allocation.id %}selected{% endif %}>
+                    {{ allocation.subject.name }} ({{ allocation.subject.subject_code }}) — {{ allocation.section.name }}
                 </option>
                 {% endfor %}
             </select>
         </div>
 
-        {% if selected_subject %}
+        {% if selected_allocation %}
             <div class="vitals-grid">
                 <div class="vital-card">
                     <span class="vital-label">Total Students</span>
@@ -220,11 +222,11 @@
     </main>
 
     <script>
-        function changeSubject(subjectId) {
-            if (subjectId) window.location.href = `?subject=${subjectId}`;
+        function changeSubject(allocationId) {
+            if (allocationId) window.location.href = `?allocation=${allocationId}`;
         }
 
-        function downloadExcel(event, subjectId) {
+        function downloadExcel(event, allocationId) {
             event.preventDefault();
             const btn = event.currentTarget; 
             const originalContent = btn.innerHTML;
@@ -233,7 +235,7 @@
             btn.style.pointerEvents = 'none';
             btn.style.opacity = '0.7';
             
-            window.location.href = `/attendance/download-excel/?subject=${subjectId}`;
+            window.location.href = `/attendance/download-excel/?allocation=${allocationId}`;
             
             setTimeout(() => {
                 btn.innerHTML = originalContent;

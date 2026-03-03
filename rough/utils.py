@@ -15,7 +15,8 @@ def is_within_radius(student_loc, college_loc, radius_meters):
     except Exception as e:
         print(f"❌ Location Error: {e}")
         return False
-    
+
+
 def load_image_opencv(image_path):
     """
     Load image using OpenCV - Most reliable on Windows

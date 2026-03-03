@@ -1,8 +1,3 @@
-# attendance/apps.py
-"""
-Attendance App Configuration
-"""
-
 from django.apps import AppConfig
 
 

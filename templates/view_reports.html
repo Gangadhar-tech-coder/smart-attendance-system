@@ -72,18 +72,17 @@
             </a>
 
             {% if user.is_staff %}
-                <a href="{% url 'select_class' %}" class="nav-item">
+                <a href="{% url 'attendance:select_class' %}" class="nav-item">
                     <i class="bi bi-plus-square-fill"></i> Start Class
                 </a>
-                <a href="{% url 'view_reports' %}" class="nav-item active">
+                <a href="{% url 'attendance:view_reports' %}" class="nav-item active">
                     <i class="bi bi-clock-history"></i> History
                 </a>
-                <a href="{% url 'attendance_calculator' %}" class="nav-item">
+                <a href="{% url 'attendance:attendance_calculator' %}" class="nav-item">
                     <i class="bi bi-calculator-fill"></i> Attendance Calculator
                 </a>
-            
             {% else %}
-                <a href="{% url 'view_reports' %}" class="nav-item active">
+                <a href="{% url 'attendance:view_reports' %}" class="nav-item active">
                     <i class="bi bi-clock-history"></i> History
                 </a>
             {% endif %}
@@ -106,7 +105,7 @@
                 <p>View your past records and activity.</p>
             </div>
             <div class="actions">
-                <button class="btn btn-outline" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                <button class="btn-outline" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
             </div>
         </header>
 
@@ -136,8 +135,9 @@
                                     <div style="font-size: 12px; color: var(--slate-600);">{{ s.start_time|date:"h:i A" }}</div>
                                 </td>
                                 <td>
-                                    <div style="font-weight: 500; color: var(--slate-900);">{{ s.subject.name }}</div>
-                                    <div style="font-size: 12px; color: var(--slate-400);">{{ s.subject.code }}</div>
+                                    <!-- FIXED: s.subject_allocation.subject.name instead of s.subject.name -->
+                                    <div style="font-weight: 500; color: var(--slate-900);">{{ s.subject_allocation.subject.name }}</div>
+                                    <div style="font-size: 12px; color: var(--slate-400);">{{ s.subject_allocation.subject.subject_code }}</div>
                                 </td>
                                 <td>
                                     {% if s.is_active %}
@@ -147,7 +147,8 @@
                                     {% endif %}
                                 </td>
                                 <td style="text-align: right;">
-                                    <a href="{% url 'session_details' s.id %}" class="btn-view">
+                                    <!-- FIXED: attendance: namespace -->
+                                    <a href="{% url 'attendance:session_details' s.id %}" class="btn-view">
                                         View Details <i class="bi bi-arrow-right-short"></i>
                                     </a>
                                 </td>
@@ -181,8 +182,9 @@
                                     <div style="font-size: 12px; color: var(--slate-600);">{{ record.timestamp|date:"h:i A" }}</div>
                                 </td>
                                 <td>
-                                    <div style="font-weight: 500; color: var(--slate-900);">{{ record.session.subject.name }}</div>
-                                    <div style="font-size: 12px; color: var(--slate-400);">{{ record.session.subject.code }}</div>
+                                    <!-- FIXED: record.session.subject_allocation.subject.name -->
+                                    <div style="font-weight: 500; color: var(--slate-900);">{{ record.session.subject_allocation.subject.name }}</div>
+                                    <div style="font-size: 12px; color: var(--slate-400);">{{ record.session.subject_allocation.subject.subject_code }}</div>
                                 </td>
                                 <td>{{ record.session.teacher.get_full_name }}</td>
                                 <td>

@@ -69,13 +69,13 @@
             <a href="{% url 'dashboard' %}" class="nav-item">
                 <i class="bi bi-grid-1x2-fill"></i> Dashboard
             </a>
-            <a href="{% url 'select_class' %}" class="nav-item">
+            <a href="{% url 'attendance:select_class' %}" class="nav-item">
                 <i class="bi bi-plus-square-fill"></i> Start Class
             </a>
-            <a href="{% url 'view_reports' %}" class="nav-item active">
+            <a href="{% url 'attendance:view_reports' %}" class="nav-item active">
                 <i class="bi bi-clock-history"></i> History
             </a>
-            <a href="{% url 'attendance_calculator' %}" class="nav-item">
+            <a href="{% url 'attendance:attendance_calculator' %}" class="nav-item">
                 <i class="bi bi-calculator-fill"></i> Attendance Calculator
             </a>
         </div>
@@ -93,11 +93,12 @@
     <main class="main-content">
         <header class="top-header">
             <div class="page-title">
-                <h1>{{ session.subject.name }}</h1>
+                <!-- FIXED: session.subject_allocation.subject.name instead of session.subject.name -->
+                <h1>{{ session.subject_allocation.subject.name }}</h1>
                 <p>Detailed attendance record for this session.</p>
             </div>
             <div class="actions">
-                <a href="{% url 'view_reports' %}" class="btn-outline">
+                <a href="{% url 'attendance:view_reports' %}" class="btn-outline">
                     <i class="bi bi-arrow-left"></i> Back to History
                 </a>
             </div>
@@ -122,7 +123,7 @@
                 <i class="bi bi-people-fill vital-icon"></i>
                 <div>
                     <div class="vital-label">Total Present</div>
-                    <div class="vital-value" style="color: var(--success);">{{ total_present }} Students</div>
+                    <div class="vital-value" style="color: var(--success);">{{ stats.present|default:"0" }} Students</div>
                 </div>
             </div>
         </div>
@@ -130,7 +131,10 @@
         <section class="os-card">
             <div class="os-card-header">
                 <h3><i class="bi bi-person-lines-fill"></i> Attendance Log</h3>
-                <span style="font-size: 12px; color: var(--slate-600);">Topic: {{ session.topic|default:"General Class" }}</span>
+                <span style="font-size: 12px; color: var(--slate-600);">
+                    <!-- FIXED: section name via subject_allocation -->
+                    {{ session.subject_allocation.section.full_name }}
+                </span>
             </div>
             
             <div class="table-container">

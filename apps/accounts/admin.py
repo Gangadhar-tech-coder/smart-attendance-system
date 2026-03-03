@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import User, Subject
+from .models import User
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -67,9 +67,9 @@ class CustomUserAdmin(BaseUserAdmin):
     readonly_fields = ['date_joined', 'last_login']
 
 
-@admin.register(Subject)
-class SubjectAdmin(admin.ModelAdmin):
-    """Admin for Subject model"""
-    list_display = ['name', 'code', 'staff', 'created_at']
-    list_filter = ['created_at']
-    search_fields = ['name', 'code']
+# @admin.register(Subject)
+# class SubjectAdmin(admin.ModelAdmin):
+#     """Admin for Subject model"""
+#     list_display = ['name', 'code', 'staff', 'created_at']
+#     list_filter = ['created_at']
+#     search_fields = ['name', 'code']

@@ -3,12 +3,10 @@ __pycache__/
 *.py[cod]
 venv/
 env/
-
 # Django
 *.log
 db.sqlite3
 media/
-
 # Sensitive Data
 .env
 secret_key.txt

@@ -85,7 +85,7 @@ class AttendanceRecordAdmin(admin.ModelAdmin):
         'marked_at',
         'location_verified'
     ]
-    list_filter = ['status', 'marked_at', 'session__session_date']
+    list_filter = ['status', 'marked_at', 'session__session_date', 'session__subject']
     search_fields = [
         'student__username',
         'student__first_name',

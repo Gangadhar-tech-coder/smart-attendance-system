@@ -68,10 +68,10 @@
             <a href="#" class="nav-item active">
                 <i class="bi bi-plus-square-fill"></i> Start Class
             </a>
-            <a href="{% url 'view_reports' %}" class="nav-item">
+            <a href="{% url 'attendance:view_reports' %}" class="nav-item">
                 <i class="bi bi-clock-history"></i> History
             </a>
-            <a href="{% url 'attendance_calculator' %}" class="nav-item">
+            <a href="{% url 'attendance:attendance_calculator' %}" class="nav-item">
                 <i class="bi bi-calculator-fill"></i> Attendance Calculator
             </a>
         </div>
@@ -100,13 +100,18 @@
         </header>
 
         <div class="subject-grid">
-            {% for subject in subjects %}
-            <a href="{% url 'create_session' subject.id %}" class="subject-card">
+            {% for allocation in allocations %}
+            <a href="{% url 'attendance:create_session' allocation.id %}" class="subject-card">
                 <div class="subject-info">
                     <div class="subject-icon"><i class="bi bi-journal-bookmark-fill"></i></div>
                     <div class="subject-text">
-                        <h3>{{ subject.name }}</h3>
-                        <p>{{ subject.code }}</p>
+                        <h3>{{ allocation.subject.name }}</h3>
+                        <!-- FIXED: subject_code instead of code -->
+                        <p>{{ allocation.subject.subject_code }} | {{ allocation.section.name }}</p>
+                        <div style="font-size: 11px; color: var(--primary); margin-top: 4px; font-weight: 600;">
+                            {{ allocation.section.course_department.course.short_name }} 
+                            (Sem {{ allocation.section.current_semester.semester_number }})
+                        </div>
                     </div>
                 </div>
                 <div class="action-arrow"><i class="bi bi-arrow-right"></i></div>
@@ -114,8 +119,10 @@
             {% empty %}
             <div class="empty-state">
                 <i class="bi bi-journal-x empty-icon"></i>
-                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No Subjects Found</h3>
-                <p style="color: var(--slate-600); font-size: 14px;">Contact the administrator to have subjects assigned to your account.</p>
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">No Classes Assigned</h3>
+                <p style="color: var(--slate-600); font-size: 14px;">
+                    You don't have any active subject allocations for the current semester.
+                </p>
             </div>
             {% endfor %}
         </div>

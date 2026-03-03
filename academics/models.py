@@ -1,6 +1,12 @@
 # academics/models.py
 """
-Enhanced Academic models integrating PostgreSQL schema features
+FINAL CORRECT STRUCTURE:
+- Course = Educational Program (BTech, MTech, PhD)
+- Department = Branch (CSE, ECE, AI, VLSI)
+- CourseAllocation = Student enrollment in Course+Dept
+- Subject = Teaching units
+- Section = Course + Department + Year + Section Letter
+- SubjectAllocation = Faculty → Subject → Section
 """
 
 from django.db import models
@@ -11,23 +17,16 @@ from django.conf import settings
 
 class Department(models.Model):
     """
-    Department model with HOD assignment capability
+    Departments/Branches: CSE, ECE, MECH, AI, VLSI, etc.
     """
     name = models.CharField(max_length=100, unique=True)
     code = models.CharField(
         max_length=10, 
         unique=True, 
-        help_text="e.g., CSE, ECE, MECH",
-        validators=[
-            RegexValidator(
-                regex=r'^[A-Z]{3,10}$',
-                message='Department code must be 3-10 uppercase letters.'
-            )
-        ]
+        help_text="e.g., CSE, ECE, MECH, AI, VLSI"
     )
     description = models.TextField(blank=True, null=True)
     
-    # NEW: Link to HOD
     hod = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -37,15 +36,11 @@ class Department(models.Model):
         limit_choices_to={'user_type': 'hod'}
     )
     
-    # NEW: Active status
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True,null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     class Meta:
         db_table = 'departments'
-        indexes = [
-            models.Index(fields=['code']),
-        ]
     
     def __str__(self):
         return f"{self.code} - {self.name}"
@@ -53,256 +48,310 @@ class Department(models.Model):
 
 class AcademicYear(models.Model):
     """
-    Academic Year model with validation
+    Academic Year (e.g., 2024-25)
     """
-    name = models.CharField(
-        max_length=20, 
-        help_text="e.g., 2023-2024",
-        validators=[
-            RegexValidator(
-                regex=r'^\d{4}-\d{2,4}$',
-                message='Year must be in format YYYY-YY or YYYY-YYYY'
-            )
-        ]
-    )
+    name = models.CharField(max_length=20, help_text="e.g., 2024-25")
     start_date = models.DateField()
     end_date = models.DateField()
-    is_active = models.BooleanField(
-        default=False, 
-        help_text="Check this if this is the current academic year"
-    )
-    
-    # NEW: Renamed from is_active to is_current for clarity
+    is_active = models.BooleanField(default=False)
     is_current = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True,null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     class Meta:
         db_table = 'academic_years'
-        indexes = [
-            models.Index(fields=['is_current']),
-            models.Index(fields=['is_active']),
-        ]
-    
-    def clean(self):
-        """Validate that end_date is after start_date"""
-        if self.end_date and self.start_date and self.end_date <= self.start_date:
-            raise ValidationError('End date must be after start date.')
     
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
-        # Ensure only one academic year is active/current at a time
-        if self.is_active or self.is_current:
-            AcademicYear.objects.filter(is_active=True).update(is_active=False)
+        if self.is_current:
             AcademicYear.objects.filter(is_current=True).update(is_current=False)
         super().save(*args, **kwargs)
 
 
-class Semester(models.Model):
+class Course(models.Model):
     """
-    Semester model linked to academic year
+    Educational Programs: BTech, MTech, PhD, etc.
+    (Called "Course" to match your terminology)
     """
-    SEMESTER_CHOICES = [
-        (1, 'Semester 1'), (2, 'Semester 2'), (3, 'Semester 3'),
-        (4, 'Semester 4'), (5, 'Semester 5'), (6, 'Semester 6'),
-        (7, 'Semester 7'), (8, 'Semester 8'),
+    COURSE_TYPE_CHOICES = [
+        ('UG', 'Undergraduate'),
+        ('PG', 'Postgraduate'),
+        ('PhD', 'Doctorate'),
     ]
     
-    academic_year = models.ForeignKey(
-        AcademicYear, 
-        on_delete=models.CASCADE, 
-        related_name='semesters'
-    )
-    number = models.IntegerField(choices=SEMESTER_CHOICES)
+    name = models.CharField(max_length=100, help_text="e.g., Bachelor of Technology")
+    short_name = models.CharField(max_length=20, unique=True, help_text="e.g., BTech, MTech, PhD")
+    course_type = models.CharField(max_length=10, choices=COURSE_TYPE_CHOICES)
+    duration_years = models.IntegerField(help_text="Duration in years")
+    total_semesters = models.IntegerField(help_text="Total number of semesters")
+    description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    class Meta:
+        db_table = 'courses'
+    
+    def __str__(self):
+        return f"{self.short_name} - {self.name}"
+
+
+class CourseDepartment(models.Model):
+    """
+    Links Courses to Departments
+    e.g., BTech has CSE, ECE, MECH
+         MTech has AI, VLSI, DS
+    """
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_departments')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='course_departments')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    class Meta:
+        db_table = 'course_departments'
+        unique_together = [['course', 'department']]
+    
+    def __str__(self):
+        return f"{self.course.short_name} - {self.department.code}"
+
+
+class Semester(models.Model):
+    """
+    Semesters for each Course
+    Different courses have different number of semesters
+    """
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='semesters')
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE, related_name='semesters')
+    semester_number = models.IntegerField(help_text="Semester number (1, 2, 3, etc.)")
     start_date = models.DateField()
     end_date = models.DateField()
-    
-    # NEW: Active status
     is_active = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('academic_year', 'number')
         db_table = 'semesters'
-
+        unique_together = ('course', 'academic_year', 'semester_number')
+    
     def __str__(self):
-        return f"{self.get_number_display()} ({self.academic_year})"
+        return f"{self.course.short_name} - Semester {self.semester_number} ({self.academic_year})"
+
+
+class Section(models.Model):
+    """
+    Section = Course + Department + Year + Section Letter
+    Example: BTech CSE Year 2 Section A
+    This is what students belong to and what faculty teach
+    """
+    YEAR_CHOICES = [(i, f'Year {i}') for i in range(1, 5)]
+    SECTION_CHOICES = [('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', 'E')]
+    
+    course_department = models.ForeignKey(
+        CourseDepartment,
+        on_delete=models.CASCADE,
+        related_name='sections',
+        help_text="Which Course-Department combination (e.g., BTech-CSE)"
+    )
+    academic_year = models.ForeignKey(
+        AcademicYear,
+        on_delete=models.CASCADE,
+        related_name='sections'
+    )
+    year = models.IntegerField(
+        choices=YEAR_CHOICES,
+        help_text="Which year of study (1, 2, 3, 4)"
+    )
+    section_letter = models.CharField(
+        max_length=1,
+        choices=SECTION_CHOICES,
+        help_text="Section letter (A, B, C, D, E)"
+    )
+    current_semester = models.ForeignKey(
+        Semester,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='sections'
+    )
+    capacity = models.IntegerField(default=60)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    class Meta:
+        db_table = 'sections'
+        unique_together = [['course_department', 'academic_year', 'year', 'section_letter']]
+    
+    def __str__(self):
+        return f"{self.course_department.course.short_name} {self.course_department.department.code} Year {self.year} Section {self.section_letter}"
+    
+    @property
+    def full_name(self):
+        """Returns: BTech CSE 2A"""
+        return f"{self.course_department.course.short_name} {self.course_department.department.code} {self.year}{self.section_letter}"
 
 
 class Subject(models.Model):
     """
-    Subject model with department and additional metadata
+    Subjects: Actual teaching subjects
+    Different for each Course + Department + Semester
+    Example: "Machine Learning" for MTech AI Semester 1
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     subject_code = models.CharField(max_length=20, unique=True)
+    
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name='subjects',
+        help_text="Which course (BTech/MTech/PhD)"
+    )
     department = models.ForeignKey(
         Department, 
         on_delete=models.CASCADE, 
-        related_name='subjects'
+        related_name='subjects',
+        help_text="Which department (CSE/ECE/AI/VLSI)"
+    )
+    semester = models.ForeignKey(
+        Semester,
+        on_delete=models.CASCADE,
+        related_name='subjects',
+        help_text="Which semester"
     )
     
+    credits = models.IntegerField(default=3)
     description = models.TextField(blank=True, null=True)
-    
-    # NEW: Additional fields from PostgreSQL schema
-    credits = models.IntegerField(
-        default=3,
-        validators=[MinValueValidator(1)]
-    )
+    is_elective = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True,null=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     class Meta:
         db_table = 'subjects'
-        indexes = [
-            models.Index(fields=['subject_code']),
-            models.Index(fields=['department', 'is_active']),
-        ]
     
     def __str__(self):
-        return f"{self.name} ({self.subject_code})"
+        return f"{self.subject_code} - {self.name} ({self.course.short_name} {self.department.code} Sem {self.semester.semester_number})"
 
 
-class Course(models.Model):
+class CourseAllocation(models.Model):
     """
-    NEW: Course model from PostgreSQL schema
-    This represents a specific offering of a subject to a class
-    (e.g., Python for CSE Year 2 Section A)
+    Student's enrollment in a Course
+    Links: Student → Course + Department + Section
+    Example: Student enrolled in BTech CSE Year 2 Section A
     """
-    YEAR_CHOICES = [(i, f'Year {i}') for i in range(1, 5)]
-    SECTION_CHOICES = [
-        ('A', 'Section A'),
-        ('B', 'Section B'),
-        ('C', 'Section C'),
-        ('D', 'Section D'),
-    ]
-    
-    code = models.CharField(max_length=20, db_index=True)
-    name = models.CharField(max_length=200)
-    
-    # Link to subject if you want to maintain relationship
-    subject = models.ForeignKey(
-        Subject,
+    student = models.OneToOneField(
+        'profiles.StudentProfile',
         on_delete=models.CASCADE,
-        related_name='courses',
-        null=True,
-        blank=True
+        related_name='course_allocation'
     )
-    
-    department = models.ForeignKey(
-        Department,
-        on_delete=models.CASCADE,
-        related_name='courses'
+    section = models.ForeignKey(
+        Section,
+        on_delete=models.PROTECT,
+        related_name='student_allocations',
+        help_text="Which section the student belongs to"
     )
     academic_year = models.ForeignKey(
         AcademicYear,
         on_delete=models.PROTECT,
-        related_name='courses'
+        related_name='course_allocations',
+        help_text="Year of admission"
     )
-    
-    # Class details
-    year = models.IntegerField(
-        choices=YEAR_CHOICES,
-        validators=[MinValueValidator(1), MaxValueValidator(4)]
+    roll_number = models.CharField(
+        max_length=30,
+        unique=True,
+        help_text="Student roll number"
     )
-    section = models.CharField(max_length=1, choices=SECTION_CHOICES)
-    credits = models.IntegerField(
-        default=3,
-        validators=[MinValueValidator(1)]
-    )
-    description = models.TextField(blank=True, null=True)
+    enrollment_date = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True,null=True)
     
     class Meta:
-        db_table = 'courses'
-        unique_together = [['code', 'academic_year', 'section']]
-        indexes = [
-            models.Index(fields=['code']),
-            models.Index(fields=['department', 'year', 'section']),
-            models.Index(fields=['academic_year', 'is_active']),
-        ]
+        db_table = 'course_allocations'
     
     def __str__(self):
-        return f"{self.code} - {self.name} (Year {self.year}, Section {self.section})"
+        return f"{self.roll_number} → {self.section.full_name}"
+    
+    @property
+    def course(self):
+        """Returns the course (BTech/MTech/PhD)"""
+        return self.section.course_department.course
+    
+    @property
+    def department(self):
+        """Returns the department (CSE/ECE/AI)"""
+        return self.section.course_department.department
+    
+    @property
+    def year(self):
+        """Returns current year of study"""
+        return self.section.year
+    
+    @property
+    def current_semester(self):
+        """Returns current semester"""
+        return self.section.current_semester
 
 
 class SubjectAllocation(models.Model):
     """
-    Enhanced SubjectAllocation with course support
-    Assigns a Subject/Course to a Faculty member for a specific Semester
+    Subject Allocation: Faculty → Subject → Section
+    Example: Prof. Smith teaches "Machine Learning" to "MTech AI Year 1 Section A"
+    
+    This is the TEACHING ASSIGNMENT
     """
     faculty = models.ForeignKey(
         'profiles.FacultyProfile', 
         on_delete=models.CASCADE, 
-        related_name='allocations'
+        related_name='subject_allocations'
     )
-    
-    # Keep existing subject field for backward compatibility
     subject = models.ForeignKey(
         Subject, 
         on_delete=models.CASCADE, 
-        related_name='allocations',
-        null=True,
-        blank=True
+        related_name='allocations'
     )
-    
-    # NEW: Support for Course model
-    course = models.ForeignKey(
-        Course,
+    section = models.ForeignKey(
+        Section,
         on_delete=models.CASCADE,
-        related_name='allocations',
-        null=True,
-        blank=True
+        related_name='subject_allocations',
+        help_text="Which section this faculty teaches (Course + Dept + Year + Section)"
     )
-    
-    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-    # section=models.ForeignKey(section,on_delete=models.CASCADE)
-    
-    # NEW: Additional fields
     assigned_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='allocations_made',
-        limit_choices_to={'user_type__in': ['hod', 'admin']}
+        related_name='allocations_made'
     )
-    assigned_at = models.DateTimeField(auto_now_add=True,null=True)
+    assigned_at = models.DateTimeField(auto_now_add=True, null=True)
     is_active = models.BooleanField(default=True)
     notes = models.TextField(blank=True, null=True)
     
     class Meta:
         db_table = 'subject_allocations'
-        # Updated to handle both subject and course
-        unique_together = ('faculty', 'semester')
-        indexes = [
-            models.Index(fields=['faculty', 'is_active']),
-        ]
-
-    def clean(self):
-        """Ensure either subject or course is set"""
-        if not self.subject and not self.course:
-            raise ValidationError('Either subject or course must be set.')
-
+        unique_together = [['faculty', 'subject', 'section']]
+    
     def __str__(self):
-        if self.course:
-            return f"{self.course.name} - {self.faculty.user.username} ({self.semester})"
-        else:
-            return f"{self.subject.name} - {self.faculty.user.username} ({self.semester})"
+        return f"{self.faculty.user.get_full_name()} → {self.subject.name} → {self.section.full_name}"
+    
+    def clean(self):
+        """Validate that subject matches section"""
+        if self.subject.course != self.section.course_department.course:
+            raise ValidationError(
+                f"Subject is for {self.subject.course.short_name} but section is for {self.section.course_department.course.short_name}"
+            )
+        if self.subject.department != self.section.course_department.department:
+            raise ValidationError(
+                f"Subject is for {self.subject.department.code} but section is for {self.section.course_department.department.code}"
+            )
 
 
-class CourseEnrollment(models.Model):
+class SubjectEnrollment(models.Model):
     """
-    NEW: Links students to courses they're enrolled in
+    Optional: For elective subjects
+    Links specific students to specific subjects
     """
     student = models.ForeignKey(
         'profiles.StudentProfile',
         on_delete=models.CASCADE,
-        related_name='course_enrollments'
+        related_name='subject_enrollments'
     )
-    course = models.ForeignKey(
-        Course,
+    subject = models.ForeignKey(
+        Subject,
         on_delete=models.CASCADE,
         related_name='enrollments'
     )
@@ -310,11 +359,8 @@ class CourseEnrollment(models.Model):
     is_active = models.BooleanField(default=True)
     
     class Meta:
-        db_table = 'course_enrollments'
-        unique_together = [['student', 'course']]
-        indexes = [
-            models.Index(fields=['student', 'is_active']),
-        ]
+        db_table = 'subject_enrollments'
+        unique_together = [['student', 'subject']]
     
     def __str__(self):
-        return f"{self.student.roll_number} enrolled in {self.course.code}"
+        return f"{self.student.roll_number} enrolled in {self.subject.subject_code}"

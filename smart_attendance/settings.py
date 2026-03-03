@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'smart_attendance.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'smart_database',
+        'NAME': 'attendance_database_2',
         'USER': 'postgres',
         'PASSWORD': 'gangu',  # <--- Type your actual password inside these quotes
         'HOST': 'localhost',
@@ -168,7 +168,6 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 
 

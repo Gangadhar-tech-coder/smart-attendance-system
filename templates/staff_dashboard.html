@@ -92,13 +92,13 @@
             <a href="{% url 'dashboard' %}" class="nav-item active">
                 <i class="bi bi-grid-1x2-fill"></i> Dashboard
             </a>
-            <a href="{% url 'select_class' %}" class="nav-item">
+            <a href="{% url 'attendance:select_class' %}" class="nav-item">
                 <i class="bi bi-plus-square-fill"></i> Start Class
             </a>
-            {% comment %} <a href="{% url 'view_reports' %}" class="nav-item">
+            <a href="{% url 'attendance:view_reports' %}" class="nav-item">
                 <i class="bi bi-clock-history"></i> History
-            </a> {% endcomment %}
-            <a href="{% url 'attendance_calculator' %}" class="nav-item">
+            </a>
+            <a href="{% url 'attendance:attendance_calculator' %}" class="nav-item">
                 <i class="bi bi-calculator-fill"></i> Attendance Calculator
             </a>
         </div>
@@ -131,7 +131,7 @@
             </div>
             <div class="vital-card">
                 <div style="display: flex; justify-content: space-between;"><div class="vital-icon"><i class="bi bi-book-half"></i></div></div>
-                <div class="vital-info"><span class="vital-label">My Subjects</span><div class="vital-value">{{ subjects.count|default:"0" }}</div></div>
+                <div class="vital-info"><span class="vital-label">My Subjects</span><div class="vital-value">{{ allocations.count|default:"0" }}</div></div>
             </div>
             <div class="vital-card">
                 <div style="display: flex; justify-content: space-between;"><div class="vital-icon"><i class="bi bi-clock-history"></i></div></div>
@@ -146,11 +146,11 @@
                         <h3><i class="bi bi-lightning-charge-fill text-warning"></i> Quick Actions</h3>
                     </div>
                     <div class="actions-grid">
-                        <div class="action-tile" onclick="window.location.href='{% url 'select_class' %}'">
+                        <div class="action-tile" onclick="window.location.href='{% url 'attendance:select_class' %}'">
                             <div class="action-icon"><i class="bi bi-play-circle-fill text-primary"></i></div>
                             <div><h4>Start New Session</h4><p>Launch a face recognition class session.</p></div>
                         </div>
-                        <div class="action-tile" onclick="window.location.href='{% url 'attendance_calculator' %}'">
+                        <div class="action-tile" onclick="window.location.href='{% url 'attendance:attendance_calculator' %}'">
                             <div class="action-icon"><i class="bi bi-calculator-fill text-success"></i></div>
                             <div><h4>Attendance Calculator</h4><p>Calculate stats and download reports.</p></div>
                         </div>
@@ -167,11 +167,13 @@
                             {% for session in active_sessions %}
                             <div class="session-item">
                                 <div class="session-meta">
-                                    <h4>{{ session.subject.name }}</h4>
+                                    <!-- FIXED: session.subject_allocation.subject.name -->
+                                    <h4>{{ session.subject_allocation.subject.name }}</h4>
                                     <span><span class="live-badge"><i class="bi bi-record-fill" style="font-size:10px;"></i> Live</span> Started: {{ session.start_time|date:"h:i A" }}</span>
                                 </div>
                                 <div>
-                                    <button class="btn-monitor" onclick="window.location.href='{% url 'monitor_session' session.id %}'">Monitor <i class="bi bi-arrow-right"></i></button>
+                                    <!-- FIXED: attendance: namespace -->
+                                    <button class="btn-monitor" onclick="window.location.href='{% url 'attendance:monitor_session' session.id %}'">Monitor <i class="bi bi-arrow-right"></i></button>
                                 </div>
                             </div>
                             {% endfor %}
@@ -189,7 +191,7 @@
                 <section class="os-card">
                     <div class="os-card-header">
                         <h3><i class="bi bi-calendar-check"></i> Recent Sessions</h3>
-                        <a href="{% url 'view_reports' %}" style="font-size:12px; font-weight:600; color:var(--primary);">View All</a>
+                        <a href="{% url 'attendance:view_reports' %}" style="font-size:12px; font-weight:600; color:var(--primary);">View All</a>
                     </div>
                     <div style="overflow-x:auto;">
                         {% if recent_sessions %}
@@ -197,8 +199,12 @@
                             <thead><tr><th>Subject</th><th>Date</th><th>Status</th></tr></thead>
                             <tbody>
                                 {% for session in recent_sessions|slice:":8" %}
-                                <tr onclick="window.location.href='{% url 'session_details' session.id %}'" style="cursor:pointer;">
-                                    <td><div style="font-weight:500;">{{ session.subject.name }}</div><div style="font-size:11px; color:var(--slate-400);">{{ session.subject.code }}</div></td>
+                                <!-- FIXED: attendance: namespace + subject_allocation path -->
+                                <tr onclick="window.location.href='{% url 'attendance:session_details' session.id %}'" style="cursor:pointer;">
+                                    <td>
+                                        <div style="font-weight:500;">{{ session.subject_allocation.subject.name }}</div>
+                                        <div style="font-size:11px; color:var(--slate-400);">{{ session.subject_allocation.subject.subject_code }}</div>
+                                    </td>
                                     <td>{{ session.start_time|date:"M d" }}</td>
                                     <td>
                                         {% if session.is_active %}<span style="color:var(--success); font-weight:600; font-size:11px;">LIVE</span>
