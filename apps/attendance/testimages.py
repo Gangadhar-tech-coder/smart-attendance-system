@@ -1,9 +1,3 @@
-"""
-Test script to diagnose image loading issues
-Run this in Django shell: python manage.py shell
-Then: exec(open('test_images.py').read())
-"""
-
 import face_recognition
 import numpy as np
 from PIL import Image
