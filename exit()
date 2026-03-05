@@ -1,0 +1,20 @@
+[33md8aa0bc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m  Logic Missed
+[33meae594e[m Solved db error
+[33ma2c163f[m Changes applied
+[33ma8ce9e1[m Removed the History component
+[33m5627fd2[m Updated ui
+[33m2dfd93b[m Fix Docker CMD to run build scri
+[33m528d8c1[m Fix Docker CMD to run build scri
+[33m80d44f4[m Fix Docker CMD to run build script
+[33m8be6f55[m Auto create admin user
+[33mf40f458[m Auto-load database data
+[33ma1d13b5[m psycopg-binaryerror docker
+[33mbc3adb8[m psycopg-binaryerror solved
+[33mbaf0535[m psycopg-binary solved
+[33m3db4e68[m Add Dockerfile to fix dlib memory error
+[33m9da5d80[m Fix dlib for Linux deployment
+[33m0035abf[m Prepared for Render deployment
+[33mfb09b26[m Implemented the excel sheet feature to the faculty dashboard
+[33m08c2789[m Dashboards Applied
+[33m1df0674[m Face recognization solved
+[33m4ee64d4[m Initial commit - Smart Attendance System with Face ID

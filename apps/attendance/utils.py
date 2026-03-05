@@ -17,15 +17,12 @@ def is_within_radius(student_loc, college_loc, radius_meters):
         return False
 
 
+# apps/attendance/utils.py - fix load_image_opencv()
+
 def load_image_opencv(image_path):
-    """
-    Load image using OpenCV - Most reliable on Windows
-    Converts BGR to RGB and ensures C-contiguous array
-    """
     try:
         print(f"  📂 Loading with OpenCV: {image_path}")
         
-        # Load with OpenCV (loads as BGR)
         img_bgr = cv2.imread(image_path)
         
         if img_bgr is None:
@@ -34,20 +31,24 @@ def load_image_opencv(image_path):
         # Convert BGR to RGB
         img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
         
-        # Ensure C-contiguous
-        if not img_rgb.flags['C_CONTIGUOUS']:
-            img_rgb = np.ascontiguousarray(img_rgb)
+        # FIX: Route through PIL to produce a dlib-compatible array
+        # This resolves the "Unsupported image type" error on Windows
+        pil_image = Image.fromarray(img_rgb)
+        pil_image = pil_image.convert('RGB')  # Ensure no alpha channel
+        img_rgb = np.array(pil_image, dtype=np.uint8)
         
-        # Verify format
-        assert img_rgb.dtype == np.uint8, f"Wrong dtype: {img_rgb.dtype}"
-        assert len(img_rgb.shape) == 3, f"Wrong shape: {img_rgb.shape}"
-        assert img_rgb.shape[2] == 3, f"Wrong channels: {img_rgb.shape[2]}"
+        # Ensure C-contiguous (critical for dlib)
+        img_rgb = np.ascontiguousarray(img_rgb)
+        
+        assert img_rgb.dtype == np.uint8
+        assert len(img_rgb.shape) == 3
+        assert img_rgb.shape[2] == 3
         
         print(f"  ✅ Image loaded: {img_rgb.shape}, dtype: {img_rgb.dtype}")
         return img_rgb
         
     except Exception as e:
-        print(f"  ❌ OpenCV failed: {e}")
+        print(f"  ❌ Load failed: {e}")
         raise
 
 

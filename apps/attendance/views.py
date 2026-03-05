@@ -235,7 +235,7 @@ def verify_my_face(request):
         result = check_face_match(
             ref_path, 
             record.captured_image.path, 
-            threshold=0.5
+            threshold=0.4
         )
         
         print(f"\n📊 Result:")

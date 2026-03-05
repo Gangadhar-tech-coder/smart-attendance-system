@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'smart_attendance.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'smart_database',
+        'NAME': 'revertdb1',
         'USER': 'postgres',
         'PASSWORD': 'gangu',  # <--- Type your actual password inside these quotes
         'HOST': 'localhost',

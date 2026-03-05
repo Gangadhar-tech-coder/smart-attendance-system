@@ -11,6 +11,13 @@ class CustomUserAdmin(UserAdmin):
     # Show these columns in the list view
     list_display = ('username', 'email', 'user_type', 'student_id', 'department')
     
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'user_type', 'student_id', 'department', 'password1', 'password2'),
+        }),
+    )
+    
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'email', 'phone_number')}),
