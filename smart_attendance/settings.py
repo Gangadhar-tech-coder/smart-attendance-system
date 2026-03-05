@@ -84,21 +84,14 @@ WSGI_APPLICATION = 'smart_attendance.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'revertdb1',
-        'USER': 'postgres',
-        'PASSWORD': 'gangu',  # <--- Type your actual password inside these quotes
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(
-        conn_max_age=600, 
+    "default": dj_database_url.config(
+        default=os.environ.get("postgresql://attendacedb_user:ug7YjmpBG4nnTeX1UhfTtUSQqAZPsxfw@dpg-d6kuapf5r7bs73e8cfsg-a.singapore-postgres.render.com/attendacedb"),
+        conn_max_age=600,
         conn_health_checks=True,
     )
+}
 
 
 AUTH_USER_MODEL = 'accounts.User'
